@@ -22,9 +22,9 @@ async function bootstrap() {
 
   // Swagger Setting
   const config = new DocumentBuilder()
-    .setTitle('Novelier Docs')
-    .setDescription('Novelier 0.1 API description')
-    .setVersion('0.1')
+    .setTitle('Veclix Docs')
+    .setDescription('Veclix 0.0.2 API description')
+    .setVersion('0.0.2')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
