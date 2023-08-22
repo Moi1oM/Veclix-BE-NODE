@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerOptionsFactory } from 'src/commons/utils/multer.options';
-import { FileService } from './file.service';
-import { FileController } from './file.controller';
+// import { FileService } from './file.service';
+// import { FileController } from './file.controller';
 
 @Module({
   imports: [
@@ -13,8 +13,8 @@ import { FileController } from './file.controller';
       inject: [ConfigService],
     }),
   ],
-  controllers: [FileController],
-  providers: [FileService],
-  exports: [FileService],
+  // controllers: [FileController],
+  // providers: [FileService],
+  // exports: [FileService],
 })
 export class FileModule {}

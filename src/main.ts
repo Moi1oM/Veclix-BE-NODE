@@ -14,11 +14,15 @@ async function bootstrap() {
   //SuccessInterceptor Setting
   app.useGlobalInterceptors(new SuccessInterceptor());
 
-  //Validation Setting
-  app.useGlobalPipes(new ValidationPipe());
-
   //Filter Setting
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  //ValidationPipe Setting
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   // Swagger Setting
   const config = new DocumentBuilder()
