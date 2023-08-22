@@ -19,8 +19,7 @@ import { UsersModule } from './modules/domains/users/users.module';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DBNAME,
-      // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      entities: [User],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, //production 환경에서는 false로 바꿔야함
     }),
     UsersModule,
