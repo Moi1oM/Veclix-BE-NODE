@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -40,4 +42,8 @@ export class User extends BaseEntity {
   discordId?: string;
 
   // RELATIONS
+  @OneToMany(() => AgentBlock, (agentBlock) => agentBlock.crafter, {
+    eager: true,
+  })
+  agentBlocks: AgentBlock[];
 }
