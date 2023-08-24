@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { User } from '../../users/entities/user.entity';
 import { AgentBlockProperties } from '../entities/agent-block.schema';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { AgentBlock } from '../entities/agent-block.entity';
 
 export class CreateAgentBlockDto {
   @ApiPropertyOptional({
@@ -50,13 +51,26 @@ export class CreateAgentBlockDto {
   })
   thumbnail_img: string;
 
-  @ApiProperty({
-    example:
-      'User Class. It will automatically be filled in by Authorization header',
-    description: 'The class of the agent block',
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsString()
-  crafter: User;
+  // @ApiProperty({
+  //   example:
+  //     'User Class. It will automatically be filled in by Authorization header',
+  //   description: 'The class of the agent block',
+  //   required: true,
+  // })
+  // @IsNotEmpty()
+  // @IsString()
+  // crafter: User;
+
+  toEntity(user: User) {
+    const agentBlock = new AgentBlock();
+    agentBlock.properties = this.properties;
+    agentBlock.contents = [];
+    agentBlock.detail = this.detail;
+    agentBlock.description = this.description;
+    agentBlock.price = this.price;
+    agentBlock.thumbnail_img = this.thumbnail_img;
+    agentBlock.parent = null;
+    agentBlock.crafter = Promise.resolve(user);
+    return agentBlock;
+  }
 }

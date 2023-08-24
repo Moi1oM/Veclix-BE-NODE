@@ -21,10 +21,8 @@ import { User } from '../users/entities/user.entity';
 @UseGuards(BasicAuthGuard)
 @Controller('task-blocks')
 export class TaskBlocksController {
-  constructor(
-    private readonly taskBlocksService: TaskBlocksService,
-    private readonly logger: Logger,
-  ) {}
+  private readonly logger = new Logger('TaskBlock');
+  constructor(private readonly taskBlocksService: TaskBlocksService) {}
 
   @ApiOperation({
     summary: 'TaskBlock 생성',

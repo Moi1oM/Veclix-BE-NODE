@@ -47,6 +47,7 @@ export class CreateUserDto {
     user.avatar_url = this.avatar_url;
     user.discordId = this.discordId;
     user.vcoin = 0;
+    user.agentBlocks = [];
     return user;
   }
 
@@ -57,6 +58,7 @@ export class CreateUserDto {
     user.avatar_url = 'default avatar_url';
     user.discordId = null;
     user.vcoin = 0;
+    user.agentBlocks = [];
     return user;
   }
 }
