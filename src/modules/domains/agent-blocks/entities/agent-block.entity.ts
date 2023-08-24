@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
+import { AgentBlockProperties } from './agent-block.schema';
 
 @Entity('agent_blocks')
 export class AgentBlock {
@@ -29,7 +30,7 @@ export class AgentBlock {
 
   // CUSTOM COLUMNS
   @Column('jsonb', { default: {} })
-  properties: any;
+  properties: AgentBlockProperties;
 
   @Column('uuid', { array: true, default: () => 'ARRAY[]::uuid[]' })
   contents: string[];
@@ -40,7 +41,7 @@ export class AgentBlock {
   @Column('text')
   detail: string;
 
-  @Column('float')
+  @Column('float', { default: 0 })
   stars: number;
 
   @Column('text')

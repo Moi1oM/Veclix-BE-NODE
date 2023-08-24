@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AgentBlocksService } from './agent-blocks.service';
+import { AgentBlocksService } from './services/agent-blocks.service';
 import { AgentBlocksController } from './agent-blocks.controller';
 
 @Module({
   controllers: [AgentBlocksController],
-  providers: [AgentBlocksService]
+  providers: [AgentBlocksService],
 })
 export class AgentBlocksModule {}

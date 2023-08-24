@@ -8,12 +8,14 @@ import {
   Delete,
   Logger,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserQueryDto } from './dto/dquery-user.dto';
+import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
 
 @ApiTags('users')
 @Controller('users')

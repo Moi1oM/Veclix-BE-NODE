@@ -28,10 +28,10 @@ export class TaskBlock {
   deletedAt?: Date;
 
   // CUSTOME COLUMNS
-  @Column('json')
+  @Column('json', { nullable: true })
   properties: TaskBlockProperties;
 
-  @Column('text', { array: true })
+  @Column('text', { array: true, nullable: true, default: [] })
   contents: string[];
 
   // RELATIONS

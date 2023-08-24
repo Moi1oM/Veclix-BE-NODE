@@ -1,17 +1,22 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserQueryDto } from './dto/dquery-user.dto';
+import { UserQueryDto } from '../dto/dquery-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly logger: Logger,
   ) {}
+  async save(user: User): Promise<User> {
+    return await this.userRepository.save(user);
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     if (await this.existsByEmail(createUserDto.email)) {
       throw new HttpException(
@@ -26,15 +31,15 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmailOrCreate(email: string): Promise<User> {
     const foundUser: User = await this.userRepository.findOne({
       where: { email: email },
     });
     if (!foundUser) {
-      throw new HttpException(
-        `User with email:${email} not found`,
-        HttpStatus.BAD_REQUEST,
-      );
+      this.logger.log(`User with email:${email} not found`);
+      const createdUserDto = CreateUserDto.toEntity(email);
+      const createdUser = await this.save(createdUserDto);
+      return createdUser;
     }
     return foundUser;
   }
@@ -107,5 +112,15 @@ export class UsersService {
       where: { email: email },
     });
     return !!foundUser;
+  }
+
+  async findUserByEmail(email: string): Promise<User> {
+    const foundUser: User = await this.userRepository.findOne({
+      where: { email: email },
+    });
+    if (!foundUser) {
+      return null;
+    }
+    return foundUser;
   }
 }

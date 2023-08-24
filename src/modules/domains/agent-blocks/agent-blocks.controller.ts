@@ -1,5 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AgentBlocksService } from './agent-blocks.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { AgentBlocksService } from './services/agent-blocks.service';
 import { CreateAgentBlockDto } from './dto/create-agent-block.dto';
 import { UpdateAgentBlockDto } from './dto/update-agent-block.dto';
 
@@ -23,7 +31,10 @@ export class AgentBlocksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAgentBlockDto: UpdateAgentBlockDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAgentBlockDto: UpdateAgentBlockDto,
+  ) {
     return this.agentBlocksService.update(+id, updateAgentBlockDto);
   }
 

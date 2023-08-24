@@ -49,4 +49,14 @@ export class CreateUserDto {
     user.vcoin = 0;
     return user;
   }
+
+  static toEntity(email: string) {
+    const user = new User();
+    user.email = email;
+    user.username = 'default username';
+    user.avatar_url = 'default avatar_url';
+    user.discordId = null;
+    user.vcoin = 0;
+    return user;
+  }
 }

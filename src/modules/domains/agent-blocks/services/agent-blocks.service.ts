@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAgentBlockDto } from './dto/create-agent-block.dto';
-import { UpdateAgentBlockDto } from './dto/update-agent-block.dto';
+import { CreateAgentBlockDto } from '../dto/create-agent-block.dto';
+import { UpdateAgentBlockDto } from '../dto/update-agent-block.dto';
 
 @Injectable()
 export class AgentBlocksService {

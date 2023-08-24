@@ -3,9 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './modules/domains/users/entities/user.entity';
 import { LoggerMiddleware } from './commons/common/logger/logger.middleware';
 import { UsersModule } from './modules/domains/users/users.module';
+import { AgentBlocksModule } from './modules/domains/agent-blocks/agent-blocks.module';
+import { TaskBlocksModule } from './modules/domains/task-blocks/task-blocks.module';
+import { AuthModule } from './modules/functions/auth/auth.module';
 
 @Module({
   imports: [
@@ -23,12 +25,16 @@ import { UsersModule } from './modules/domains/users/users.module';
       synchronize: true, //production 환경에서는 false로 바꿔야함
     }),
     UsersModule,
+    AgentBlocksModule,
+    TaskBlocksModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  private readonly isDev: boolean = process.env.MODE === 'dev' ? true : false;
+  private readonly isDev: boolean =
+    process.env.NODE_ENV === 'DEV' ? true : false;
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
   }
