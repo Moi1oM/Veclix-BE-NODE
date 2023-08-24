@@ -5,10 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
 
 @Entity('agent_blocks')
 export class AgentBlock {
@@ -57,6 +59,9 @@ export class AgentBlock {
   @ManyToOne(() => User, (user) => user.agentBlocks)
   @JoinColumn({ name: 'crafter' })
   crafter: Promise<User>;
+
+  @OneToMany(() => TaskBlock, (taskBlock) => taskBlock.agentBlock)
+  taskBlocks: TaskBlock[];
 
   // @ManyToMany(() => Review)
   // @JoinTable()
