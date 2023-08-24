@@ -1,6 +1,8 @@
 import { TaskBlockProperties } from './../entities/task-block.schema';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { TaskBlock } from '../entities/task-block.entity';
+import { User } from '../../users/entities/user.entity';
 
 export class CreateTaskBlockDto {
   @ApiPropertyOptional({
@@ -14,4 +16,12 @@ export class CreateTaskBlockDto {
     required: false,
   })
   properties?: TaskBlockProperties;
+
+  toEntity(user: User) {
+    const taskBlock = new TaskBlock();
+    taskBlock.properties = this.properties;
+    taskBlock.contents = [];
+    taskBlock.crafter = Promise.resolve(user);
+    return taskBlock;
+  }
 }
