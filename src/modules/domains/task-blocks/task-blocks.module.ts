@@ -14,5 +14,6 @@ import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
   ],
   controllers: [TaskBlocksController],
   providers: [TaskBlocksService],
+  exports: [TaskBlocksService],
 })
 export class TaskBlocksModule {}

@@ -5,17 +5,15 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
+import { ToolBlockProperties } from './tool-block.schema';
 import { User } from '../../users/entities/user.entity';
-import { TaskBlockProperties } from './task-block.schema';
-import { ToolBlock } from '../../tool-blocks/entities/tool-block.entity';
+import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
 
-@Entity('task_blocks')
-export class TaskBlock {
+@Entity('tool_blocks')
+export class ToolBlock {
   // BASIC COLUMNS
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,7 +29,7 @@ export class TaskBlock {
 
   // CUSTOME COLUMNS
   @Column('json', { nullable: true })
-  properties: TaskBlockProperties;
+  properties: ToolBlockProperties;
 
   @Column('text', { array: true, nullable: true, default: [] })
   contents: string[];
@@ -41,10 +39,7 @@ export class TaskBlock {
   @JoinColumn({ name: 'crafter' })
   crafter: Promise<User>;
 
-  @ManyToOne(() => AgentBlock, (agentBlock) => agentBlock.taskBlocks)
-  @JoinColumn({ name: 'agent_block' })
-  agentBlock: Promise<AgentBlock>;
-
-  @OneToMany(() => ToolBlock, (toolBlock) => toolBlock.taskBlock)
-  toolBlocks: ToolBlock[];
+  @ManyToOne(() => TaskBlock, (taskBlock) => taskBlock.toolBlocks)
+  @JoinColumn({ name: 'task_block' })
+  taskBlock: Promise<TaskBlock>;
 }
