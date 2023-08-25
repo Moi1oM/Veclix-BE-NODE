@@ -8,6 +8,7 @@ import { UsersModule } from './modules/domains/users/users.module';
 import { AgentBlocksModule } from './modules/domains/agent-blocks/agent-blocks.module';
 import { TaskBlocksModule } from './modules/domains/task-blocks/task-blocks.module';
 import { AuthModule } from './modules/functions/auth/auth.module';
+import { ToolBlocksModule } from './modules/domains/tool-blocks/tool-blocks.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthModule } from './modules/functions/auth/auth.module';
     AgentBlocksModule,
     TaskBlocksModule,
     AuthModule,
+    ToolBlocksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
