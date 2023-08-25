@@ -69,7 +69,6 @@ export class CreateAgentBlockDto {
     agentBlock.description = this.description;
     agentBlock.price = this.price;
     agentBlock.thumbnail_img = this.thumbnail_img;
-    agentBlock.parent = null;
     agentBlock.crafter = Promise.resolve(user);
     return agentBlock;
   }

@@ -10,5 +10,6 @@ import { AuthModule } from 'src/modules/functions/auth/auth.module';
   imports: [UsersModule, TypeOrmModule.forFeature([AgentBlock]), AuthModule],
   controllers: [AgentBlocksController],
   providers: [AgentBlocksService, Logger],
+  exports: [AgentBlocksService],
 })
 export class AgentBlocksModule {}

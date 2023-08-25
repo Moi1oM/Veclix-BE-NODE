@@ -29,14 +29,11 @@ export class AgentBlock {
   deletedAt?: Date;
 
   // CUSTOM COLUMNS
-  @Column('jsonb', { default: {} })
+  @Column('jsonb', { default: {}, nullable: true })
   properties: AgentBlockProperties;
 
   @Column('uuid', { array: true, default: () => 'ARRAY[]::uuid[]' })
   contents: string[];
-
-  @Column({ type: 'uuid', nullable: true })
-  parent: string | null;
 
   @Column('text')
   detail: string;
@@ -47,10 +44,10 @@ export class AgentBlock {
   @Column('text')
   description: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   price: string;
 
-  @Column('boolean')
+  @Column('boolean', { default: false })
   inStore: boolean;
 
   @Column('text')

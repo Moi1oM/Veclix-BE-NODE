@@ -95,7 +95,6 @@ export class AgentBlocksController {
     summary: 'agent Block 삭제',
     description: 'agent Block id를 가지고 agent Block 한개를 삭제합니다.',
   })
-  @ApiOperation({ deprecated: true })
   @Delete(':id')
   async remove(@Param('id') id: string) {
     this.logger.log(`delete agent block id: ${JSON.stringify(id)}`);

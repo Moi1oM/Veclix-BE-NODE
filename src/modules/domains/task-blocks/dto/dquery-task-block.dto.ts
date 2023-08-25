@@ -1,9 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateTaskBlockDto } from './create-task-block.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { TaskBlockProperties } from '../entities/task-block.schema';
+import { IsOptional } from 'class-validator';
 
-export class UpdateTaskBlockDto {
+export class TaskBlockQuery {
   @ApiPropertyOptional({
     example: {
       name: 'Task Block 1',
@@ -14,7 +12,8 @@ export class UpdateTaskBlockDto {
     type: 'object',
     required: false,
   })
-  properties?: TaskBlockProperties;
+  @IsOptional()
+  properties?: any;
 
   @ApiPropertyOptional({
     example: ['uuid of tool1 id', 'uuid of tool2 id'],
@@ -22,5 +21,6 @@ export class UpdateTaskBlockDto {
     type: 'array',
     required: false,
   })
+  @IsOptional()
   contents?: string[];
 }

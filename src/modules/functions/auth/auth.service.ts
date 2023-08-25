@@ -43,7 +43,7 @@ export class AuthService {
     };
 
     const verifyFunction = providerVerifiers[provider];
-    console.log(verifyFunction);
+    // console.log(verifyFunction);
     if (!verifyFunction) {
       return null;
     }
@@ -53,7 +53,7 @@ export class AuthService {
 
   async verifyGoogleToken(token: string): Promise<string | null> {
     const headers = { Authorization: `Bearer ${token}` };
-    console.log(headers);
+    // console.log(headers);
     const response = await axios.get(
       'https://www.googleapis.com/oauth2/v3/userinfo',
       {

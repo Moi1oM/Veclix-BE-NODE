@@ -12,10 +12,10 @@ export class BasicAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    console.log(request.headers);
+    // console.log(request.headers);
     const token = request.headers.authorization?.split(' ')[1];
     const provider = request.headers.provider;
-    console.log(token, provider);
+    // console.log(token, provider);
     if (!token || !provider) {
       throw new UnauthorizedException('token or provider is not exist');
     }

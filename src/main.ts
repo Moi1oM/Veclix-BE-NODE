@@ -27,13 +27,13 @@ async function bootstrap() {
   // Swagger Setting
   const config = new DocumentBuilder()
     .setTitle('Veclix Docs')
-    .setDescription('Veclix 0.0.2 API description')
+    .setDescription('Veclix 0.0.2 API description Enjoy Your Coffee :D')
     .setVersion('0.0.2')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3000);
+  await app.listen(8000);
 }
 bootstrap();

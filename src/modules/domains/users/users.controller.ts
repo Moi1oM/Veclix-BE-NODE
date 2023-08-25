@@ -36,6 +36,8 @@ export class UsersController {
     summary: '유저 전체 조회',
     description: '유저 전체를 조회합니다.',
   })
+  @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
+  @UseGuards(BasicAuthGuard)
   @Get('/all')
   findAll() {
     return this.usersService.findAll();
@@ -45,6 +47,8 @@ export class UsersController {
     summary: '유저 조회 1',
     description: '유저id를 가지고 유저 한명을 조회합니다.',
   })
+  @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
+  @UseGuards(BasicAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
@@ -55,6 +59,8 @@ export class UsersController {
     description:
       '쿼리로 유저 정보를 받아서 그에 해당하는 유저 리스트를 반환합니다.',
   })
+  @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
+  @UseGuards(BasicAuthGuard)
   @Get()
   async getUsers(@Query() query: UserQueryDto) {
     this.log.log(`[UsersController] query: ${JSON.stringify(query)}`);
@@ -65,6 +71,8 @@ export class UsersController {
     summary: '유저 업데이트',
     description: '유저id를 가지고 유저 한명을 업데이트합니다.',
   })
+  @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
+  @UseGuards(BasicAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
@@ -74,6 +82,8 @@ export class UsersController {
     summary: '유저 삭제',
     description: '유저id를 가지고 유저 한명을 삭제합니다.',
   })
+  @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
@@ -84,6 +94,8 @@ export class UsersController {
     description:
       '유저id를 가지고 유저 한명을 soft 삭제합니다. 실제로 삭제되지 않습니다. deleteAt이 업데이트 됩니다.',
   })
+  @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
+  @UseGuards(BasicAuthGuard)
   @Delete('soft/:id')
   softRemove(@Param('id') id: string) {
     return this.usersService.softRemove(+id);

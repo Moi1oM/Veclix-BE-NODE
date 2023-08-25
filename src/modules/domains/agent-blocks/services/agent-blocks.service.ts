@@ -20,13 +20,14 @@ export class AgentBlocksService {
   ) {}
 
   async create(agentBlock: AgentBlock, user: User) {
-    await this.usersService.addAgentBlock(user, agentBlock);
+    // await this.usersService.addAgentBlock(user, agentBlock);
     return await this.agentBlockRepository.save(agentBlock);
   }
 
   async findAgentBlocksByDQuery(query: AgentBlocksQuery) {
     const agentBlocksList: AgentBlock[] = await this.agentBlockRepository.find({
       where: query,
+      relations: ['crafter'],
     });
     if (agentBlocksList.length == 0) {
       throw new HttpException(
@@ -34,16 +35,17 @@ export class AgentBlocksService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return await this.agentBlockRepository.find();
+    return agentBlocksList;
   }
 
   async findAll() {
-    return await this.agentBlockRepository.find();
+    return await this.agentBlockRepository.find({ relations: ['crafter'] });
   }
 
   async findOneByAgentIdOrException(agentId: string) {
     const foundAgent = await this.agentBlockRepository.findOne({
       where: { id: agentId },
+      relations: ['crafter'],
     });
     if (!foundAgent) {
       throw new HttpException(

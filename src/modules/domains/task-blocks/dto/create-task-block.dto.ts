@@ -1,6 +1,6 @@
 import { TaskBlockProperties } from './../entities/task-block.schema';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 import { TaskBlock } from '../entities/task-block.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -16,6 +16,16 @@ export class CreateTaskBlockDto {
     required: false,
   })
   properties?: TaskBlockProperties;
+
+  @ApiProperty({
+    example: '3f9af69a-6fa6-4237-a787-2b3330632ebc',
+    description: 'The uuid of the agent block',
+    type: 'string',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  agent_uuid: string;
 
   toEntity(user: User) {
     const taskBlock = new TaskBlock();

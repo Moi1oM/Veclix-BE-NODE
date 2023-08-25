@@ -40,6 +40,6 @@ export class TaskBlock {
   crafter: Promise<User>;
 
   @ManyToOne(() => AgentBlock, (agentBlock) => agentBlock.taskBlocks)
-  @JoinColumn({ name: 'agent_uuid' })
-  agentBlock: AgentBlock;
+  @JoinColumn({ name: 'agent_block' })
+  agentBlock: Promise<AgentBlock>;
 }
