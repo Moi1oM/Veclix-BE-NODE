@@ -9,6 +9,8 @@ import { AgentBlocksModule } from './modules/domains/agent-blocks/agent-blocks.m
 import { TaskBlocksModule } from './modules/domains/task-blocks/task-blocks.module';
 import { AuthModule } from './modules/functions/auth/auth.module';
 import { ToolBlocksModule } from './modules/domains/tool-blocks/tool-blocks.module';
+import { TagsModule } from './modules/domains/tags/tags.module';
+import { AgentTagsModule } from './modules/domains/agent_tags/agent_tags.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { ToolBlocksModule } from './modules/domains/tool-blocks/tool-blocks.modu
     TaskBlocksModule,
     AuthModule,
     ToolBlocksModule,
+    TagsModule,
+    AgentTagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
