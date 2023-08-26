@@ -11,6 +11,7 @@ import { AuthModule } from './modules/functions/auth/auth.module';
 import { ToolBlocksModule } from './modules/domains/tool-blocks/tool-blocks.module';
 import { TagsModule } from './modules/domains/tags/tags.module';
 import { AgentTagsModule } from './modules/domains/agent_tags/agent_tags.module';
+import { UserScrapsModule } from './modules/domains/user-scraps/user-scraps.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { AgentTagsModule } from './modules/domains/agent_tags/agent_tags.module'
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DBNAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, //production 환경에서는 false로 바꿔야함
+      synchronize: process.env.NODE_ENV === 'DEV' ? true : false,
     }),
     UsersModule,
     AgentBlocksModule,
@@ -34,6 +35,7 @@ import { AgentTagsModule } from './modules/domains/agent_tags/agent_tags.module'
     ToolBlocksModule,
     TagsModule,
     AgentTagsModule,
+    UserScrapsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

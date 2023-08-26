@@ -9,6 +9,7 @@ import { UsersService } from '../../users/services/users.service';
 import { UsersRelatedAgentBlockService } from '../../users/services/usersAgentBlock.service';
 import { User } from '../../users/entities/user.entity';
 import { AgentBlocksQuery } from '../dto/dquery-agent-block.dto';
+import { UserScrapsService } from '../../user-scraps/user-scraps.service';
 
 @Injectable()
 export class AgentBlocksService {
@@ -17,11 +18,31 @@ export class AgentBlocksService {
     @InjectRepository(AgentBlock)
     private readonly agentBlockRepository: Repository<AgentBlock>,
     private readonly usersService: UsersRelatedAgentBlockService,
+    private readonly userScrapService: UserScrapsService,
   ) {}
 
   async create(agentBlock: AgentBlock, user: User) {
     // await this.usersService.addAgentBlock(user, agentBlock);
     return await this.agentBlockRepository.save(agentBlock);
+  }
+
+  async findAllAgentBlocksForUser(user_id: number): Promise<any[]> {
+    const allAgentBlocks: AgentBlock[] = await this.findAll();
+
+    const agentBlocksWithScrapStatus = await Promise.all(
+      allAgentBlocks.map(async (agentBlock) => {
+        const hasScrapped = await this.userScrapService.hasUserScrappedAgent(
+          user_id,
+          agentBlock.id,
+        );
+        return {
+          ...agentBlock,
+          hasScrapped,
+        };
+      }),
+    );
+
+    return agentBlocksWithScrapStatus;
   }
 
   async findAgentBlocksByDQuery(query: AgentBlocksQuery) {

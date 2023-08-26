@@ -1,3 +1,4 @@
+import { UserScrapsService } from './../../user-scraps/user-scraps.service';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';

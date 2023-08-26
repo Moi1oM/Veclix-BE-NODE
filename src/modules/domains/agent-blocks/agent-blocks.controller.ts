@@ -55,6 +55,17 @@ export class AgentBlocksController {
   }
 
   @ApiOperation({
+    summary:
+      'agent Block 전체 조회 N. 유저가 에이전트를 스크랩 했는지를 반환합니다.',
+    description:
+      'agent Block 전체를 조회합니다. 스크랩 여부를 함께 반환합니다. 유저는 access-token으로부터 가져옵니다.',
+  })
+  @Get('/all/@me')
+  async findAllForUser(@CurrentUser() user: User) {
+    return await this.agentBlocksService.findAllAgentBlocksForUser(user.id);
+  }
+
+  @ApiOperation({
     summary: 'agent Block 조회 1',
     description: 'agent Block id를 가지고 agent Block 한개를 조회합니다.',
   })

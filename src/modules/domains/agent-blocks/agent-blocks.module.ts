@@ -5,9 +5,15 @@ import { UsersModule } from '../users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AgentBlock } from './entities/agent-block.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
+import { UserScrapsModule } from '../user-scraps/user-scraps.module';
 
 @Module({
-  imports: [UsersModule, TypeOrmModule.forFeature([AgentBlock]), AuthModule],
+  imports: [
+    UsersModule,
+    TypeOrmModule.forFeature([AgentBlock]),
+    AuthModule,
+    UserScrapsModule,
+  ],
   controllers: [AgentBlocksController],
   providers: [AgentBlocksService, Logger],
   exports: [AgentBlocksService],
