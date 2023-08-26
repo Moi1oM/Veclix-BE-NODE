@@ -12,6 +12,7 @@ import { ToolBlocksModule } from './modules/domains/tool-blocks/tool-blocks.modu
 import { TagsModule } from './modules/domains/tags/tags.module';
 import { AgentTagsModule } from './modules/domains/agent_tags/agent_tags.module';
 import { UserScrapsModule } from './modules/domains/user-scraps/user-scraps.module';
+import { ReviewsModule } from './modules/domains/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserScrapsModule } from './modules/domains/user-scraps/user-scraps.modu
     TagsModule,
     AgentTagsModule,
     UserScrapsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

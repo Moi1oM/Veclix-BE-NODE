@@ -13,6 +13,7 @@ import { User } from '../../users/entities/user.entity';
 import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
 import { AgentBlockProperties } from './agent-block.schema';
 import { AgentTag } from '../../agent_tags/entities/agent_tag.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity('agent_blocks')
 export class AgentBlock {
@@ -68,4 +69,7 @@ export class AgentBlock {
 
   @OneToMany(() => AgentTag, (agentTag) => agentTag.agentBlock)
   agentTags: AgentTag[];
+
+  @OneToMany(() => Review, (review) => review.agentBlock)
+  reviews: Review[];
 }
