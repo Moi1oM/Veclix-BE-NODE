@@ -1,4 +1,11 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateAgentBlockDto } from '../dto/create-agent-block.dto';
 import { UpdateAgentBlockDto } from '../dto/update-agent-block.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +17,7 @@ import { UsersRelatedAgentBlockService } from '../../users/services/usersAgentBl
 import { User } from '../../users/entities/user.entity';
 import { AgentBlocksQuery } from '../dto/dquery-agent-block.dto';
 import { UserScrapsService } from '../../user-scraps/user-scraps.service';
+import { ReviewsService } from '../../reviews/reviews.service';
 
 @Injectable()
 export class AgentBlocksService {
@@ -19,6 +27,8 @@ export class AgentBlocksService {
     private readonly agentBlockRepository: Repository<AgentBlock>,
     private readonly usersService: UsersRelatedAgentBlockService,
     private readonly userScrapService: UserScrapsService,
+    @Inject(forwardRef(() => ReviewsService))
+    private readonly reveiwsService: ReviewsService,
   ) {}
 
   async create(agentBlock: AgentBlock, user: User) {
@@ -35,9 +45,13 @@ export class AgentBlocksService {
           user_id,
           agentBlock.id,
         );
+        const starAvg = await this.reveiwsService.findAgentsStarAvg(
+          agentBlock.id,
+        );
         return {
           ...agentBlock,
           hasScrapped,
+          starAvg,
         };
       }),
     );
@@ -45,7 +59,7 @@ export class AgentBlocksService {
     return agentBlocksWithScrapStatus;
   }
 
-  async findAgentBlocksByDQuery(query: AgentBlocksQuery) {
+  async findAgentBlocksByDQuery(query: AgentBlocksQuery, user_id: number) {
     const agentBlocksList: AgentBlock[] = await this.agentBlockRepository.find({
       where: query,
       relations: ['crafter'],
@@ -56,6 +70,20 @@ export class AgentBlocksService {
         HttpStatus.BAD_REQUEST,
       );
     }
+    agentBlocksList.map(async (agentBlock) => {
+      const hasScrapped = await this.userScrapService.hasUserScrappedAgent(
+        user_id,
+        agentBlock.id,
+      );
+      const starAvg = await this.reveiwsService.findAgentsStarAvg(
+        agentBlock.id,
+      );
+      return {
+        ...agentBlock,
+        hasScrapped,
+        starAvg,
+      };
+    });
     return agentBlocksList;
   }
 

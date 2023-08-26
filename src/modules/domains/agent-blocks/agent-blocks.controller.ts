@@ -9,6 +9,7 @@ import {
   UseGuards,
   Logger,
   Query,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AgentBlocksService } from './services/agent-blocks.service';
 import { CreateAgentBlockDto } from './dto/create-agent-block.dto';
@@ -70,7 +71,7 @@ export class AgentBlocksController {
     description: 'agent Block id를 가지고 agent Block 한개를 조회합니다.',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.agentBlocksService.findOne(id);
   }
 
@@ -80,9 +81,15 @@ export class AgentBlocksController {
       '쿼리로 agent Block 정보를 받아서 그에 해당하는 agent Block 리스트를 반환합니다.',
   })
   @Get()
-  async findByQuery(@Query() query: AgentBlocksQuery) {
+  async findByQuery(
+    @Query() query: AgentBlocksQuery,
+    @CurrentUser() user: User,
+  ) {
     this.logger.log(`[AgentBlocksController] query: ${JSON.stringify(query)}`);
-    return await this.agentBlocksService.findAgentBlocksByDQuery(query);
+    return await this.agentBlocksService.findAgentBlocksByDQuery(
+      query,
+      user.id,
+    );
   }
 
   @ApiOperation({
@@ -91,7 +98,7 @@ export class AgentBlocksController {
   })
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateAgentBlockDto: UpdateAgentBlockDto,
   ) {
     this.logger.log(
@@ -118,7 +125,7 @@ export class AgentBlocksController {
       'agent Block id를 가지고 agent Block 한개를 soft 삭제합니다. 실제로 삭제되지 않습니다. deleteAt이 업데이트 됩니다.',
   })
   @Delete('soft/:id')
-  async softRemove(@Param('id') id: string) {
+  async softRemove(@Param('id', new ParseUUIDPipe()) id: string) {
     this.logger.log(`soft delete agent block id: ${JSON.stringify(id)}`);
     return await this.agentBlocksService.softDelete(id);
   }

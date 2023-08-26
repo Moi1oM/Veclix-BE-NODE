@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Logger,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ToolBlocksService } from './services/tool-blocks.service';
 import { CreateToolBlockDto } from './dto/create-tool-block.dto';
@@ -59,7 +60,7 @@ export class ToolBlocksController {
       'toolBlock id를 가지고 toolBlock 한개를 조회합니다. 해당하는 id가 없으면 400에러를 반환합니다.',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.toolBlocksService.findOne(id);
   }
 
@@ -70,7 +71,7 @@ export class ToolBlocksController {
   })
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateToolBlockDto: UpdateToolBlockDto,
   ) {
     return this.toolBlocksService.update(id, updateToolBlockDto);
@@ -82,7 +83,7 @@ export class ToolBlocksController {
       'toolBlock id를 가지고 toolBlock 한개를 삭제합니다. 해당하는 id가 없으면 400에러를 반환합니다.',
   })
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.toolBlocksService.remove(id);
   }
 
@@ -92,7 +93,7 @@ export class ToolBlocksController {
       'toolBlock id를 가지고 toolBlock 한개를 소프트 삭제합니다. 해당하는 id가 없으면 400에러를 반환합니다.',
   })
   @Delete('/soft/:id')
-  async softDelete(@Param('id') id: string) {
+  async softDelete(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.toolBlocksService.softDelete(id);
   }
 }

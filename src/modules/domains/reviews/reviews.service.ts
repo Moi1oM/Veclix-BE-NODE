@@ -2,8 +2,10 @@ import {
   BadRequestException,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -17,8 +19,22 @@ export class ReviewsService {
   constructor(
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
+    @Inject(forwardRef(() => AgentBlocksService))
     private readonly agentBlocksService: AgentBlocksService,
   ) {}
+
+  async findAgentsStarAvg(agent_uuid: string): Promise<number> {
+    const reviews = await this.reviewRepository.find({
+      where: { agent_uuid: agent_uuid },
+    });
+    if (reviews.length == 0) {
+      return 0;
+    }
+    const starSum = reviews.reduce((acc, review) => {
+      return acc + review.stars;
+    }, 0);
+    return starSum / reviews.length;
+  }
 
   async findReviewByIdOrException(id: number): Promise<Review> {
     const review = await this.reviewRepository.findOne({ where: { id: id } });

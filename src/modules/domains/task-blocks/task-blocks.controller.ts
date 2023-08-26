@@ -9,6 +9,7 @@ import {
   Logger,
   UseGuards,
   Query,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { TaskBlocksService } from './task-blocks.service';
 import { CreateTaskBlockDto } from './dto/create-task-block.dto';
@@ -61,7 +62,7 @@ export class TaskBlocksController {
       'TaskBlock 1개를 id(uuid)를 가지고 조회합니다. 해당하는 TaskBlock이 없으면 400 에러를 반환합니다.',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.taskBlocksService.findOne(id);
   }
 
@@ -82,7 +83,7 @@ export class TaskBlocksController {
   })
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateTaskBlockDto: UpdateTaskBlockDto,
   ) {
     return await this.taskBlocksService.update(id, updateTaskBlockDto);
@@ -94,7 +95,7 @@ export class TaskBlocksController {
       'TaskBlock을 id를 가지고 삭제합니다. id에 해당하는 TaskBlock이 없으면 400 에러를 반환합니다.',
   })
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.taskBlocksService.remove(id);
   }
 
@@ -104,7 +105,7 @@ export class TaskBlocksController {
       'TaskBlock을 id를 가지고 소프트 삭제합니다.(실제로 db에 사라지지 않고 deletedAt이 update됩니다.) id에 해당하는 TaskBlock이 없으면 400 에러를 반환합니다.',
   })
   @Delete('soft/:id')
-  async softRemove(@Param('id') id: string) {
+  async softRemove(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.taskBlocksService.softRemove(id);
   }
 }
