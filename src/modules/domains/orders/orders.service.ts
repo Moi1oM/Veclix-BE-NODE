@@ -12,6 +12,20 @@ export class OrdersService {
     private orderRepository: Repository<Order>,
   ) {}
 
+  async updateOrderTotalAmount(
+    orderId: number,
+    newAmount: number,
+  ): Promise<Order> {
+    const order = await this.orderRepository.findOne({
+      where: {
+        id: orderId,
+      },
+    });
+    order.totalAmount += newAmount;
+    const updatedOrder = await this.orderRepository.save(order);
+    return updatedOrder;
+  }
+
   async createEmptyOrder(userId: number) {
     const newOrder = await this.orderRepository.save({
       userId: userId,
@@ -36,8 +50,8 @@ export class OrdersService {
     });
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: number): Promise<Order> {
+    return await this.orderRepository.findOne({ where: { id: id } });
   }
 
   async update(id: number, updateOrderDto: UpdateOrderDto) {

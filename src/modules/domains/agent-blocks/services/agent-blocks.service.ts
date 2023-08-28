@@ -110,14 +110,19 @@ export class AgentBlocksService {
     return foundAgent;
   }
 
-  async update(id: string, updateAgentBlockDto: UpdateAgentBlockDto) {
+  async update(
+    id: string,
+    updateAgentBlockDto: UpdateAgentBlockDto,
+  ): Promise<AgentBlock> {
     await this.findOneByAgentIdOrException(id);
-    return await this.agentBlockRepository.update(id, updateAgentBlockDto);
+    await this.agentBlockRepository.update(id, updateAgentBlockDto);
+    return await this.findOneByAgentIdOrException(id);
   }
 
-  async remove(id: string) {
-    await this.findOneByAgentIdOrException(id);
-    return await this.agentBlockRepository.delete(id);
+  async remove(id: string): Promise<AgentBlock> {
+    const agentBlock = await this.findOneByAgentIdOrException(id);
+    await this.agentBlockRepository.delete(id);
+    return agentBlock;
   }
 
   async softDelete(id: string) {

@@ -55,6 +55,8 @@ export class Order {
   user: User;
 
   public addNewOrderDetail(orderDetail: OrderDetails) {
+    console.log('orderDetail', orderDetail);
+    console.log('agent', orderDetail.agent);
     this.orderDetails.push(orderDetail);
     this.totalAmount += orderDetail.agent.realPrice;
   }

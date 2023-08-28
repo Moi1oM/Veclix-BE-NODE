@@ -11,7 +11,7 @@ import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
   imports: [
     TypeOrmModule.forFeature([OrderDetails]),
     AuthModule,
-    OrdersModule,
+    forwardRef(() => OrdersModule),
     AgentBlocksModule,
   ],
   controllers: [OrderDetailsController],

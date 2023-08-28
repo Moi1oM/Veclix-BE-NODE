@@ -6,6 +6,7 @@ import { OrderDetails } from './entities/order-detail.entity';
 import { Repository } from 'typeorm';
 import { OrdersService } from '../orders/orders.service';
 import { AgentBlocksService } from '../agent-blocks/services/agent-blocks.service';
+import { Order } from '../orders/entities/order.entity';
 
 @Injectable()
 export class OrderDetailsService {
@@ -16,27 +17,40 @@ export class OrderDetailsService {
     private readonly agentBlocksService: AgentBlocksService,
   ) {}
 
-  async create(
-    createOrderDetailDto: CreateOrderDetailDto,
-  ): Promise<OrderDetails> {
+  async create(createOrderDetailDto: CreateOrderDetailDto): Promise<Order> {
     const recentOrder =
       await this.ordersService.getRecentNotPaidOrderWithUserId(
         createOrderDetailDto.userId,
       );
-    // const agent = await this.agentBlocksService.findOne(
-    //   createOrderDetailDto.agent_block_id,
-    // );
+    const existedOrderDetail = recentOrder.orderDetails;
+    // check if the agent_block_id is already in the order
+    const isAgentBlockAlreadyInOrder = existedOrderDetail.some(
+      (orderDetail) =>
+        orderDetail.agent.id === createOrderDetailDto.agent_block_id,
+    );
+    if (isAgentBlockAlreadyInOrder) {
+      throw new HttpException(
+        'agent block is already in the order',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const agent = await this.agentBlocksService.findOne(
+      createOrderDetailDto.agent_block_id,
+    );
     // drop the agent_block_id in createOrderDetailDto and agent
     // delete createOrderDetailDto.agent_block_id;
-    // createOrderDetailDto.agent = agent;
     const newOrderDetail = await this.orderDetailsRepository.save({
       ...createOrderDetailDto,
-      agentId: createOrderDetailDto.agent_block_id,
-      orderId: recentOrder.id,
+      order: recentOrder,
+      agent: agent,
     });
-    recentOrder.addNewOrderDetail(newOrderDetail);
-    await this.ordersService.update(+recentOrder.id, recentOrder);
-    return newOrderDetail;
+    const updatedOrder = await this.ordersService.updateOrderTotalAmount(
+      recentOrder.id,
+      newOrderDetail.agent.realPrice,
+    );
+    // recentOrder.addNewOrderDetail(newOrderDetail);
+    // await this.ordersService.update(+recentOrder.id, recentOrder);
+    return updatedOrder;
   }
 
   async findOrderDetailOrException(id: number): Promise<OrderDetails> {

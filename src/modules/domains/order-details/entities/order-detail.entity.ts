@@ -38,7 +38,9 @@ export class OrderDetails {
   @JoinColumn()
   order: Order;
 
-  @ManyToOne(() => AgentBlock, (agent) => agent.orderDetails)
+  @ManyToOne(() => AgentBlock, (agent) => agent.orderDetails, {
+    eager: true,
+  })
   @JoinColumn()
   agent: AgentBlock;
 }

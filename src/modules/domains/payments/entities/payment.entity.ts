@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -40,8 +41,12 @@ export class Payment {
   @Column({ type: 'varchar', nullable: true })
   provider: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  userId: number;
+
   // RELATIONS
   @ManyToOne(() => User, (user) => user.paymentCards)
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @OneToMany(() => Order, (order) => order.payment)
