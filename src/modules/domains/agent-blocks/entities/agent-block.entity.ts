@@ -14,6 +14,7 @@ import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
 import { AgentBlockProperties } from './agent-block.schema';
 import { AgentTag } from '../../agent_tags/entities/agent_tag.entity';
 import { Review } from '../../reviews/entities/review.entity';
+import { OrderDetails } from '../../order-details/entities/order-detail.entity';
 
 @Entity('agent_blocks')
 export class AgentBlock {
@@ -49,6 +50,9 @@ export class AgentBlock {
   @Column('text', { nullable: true })
   price: string;
 
+  @Column('float', { default: 0 })
+  realPrice: number;
+
   @Column('boolean', { default: false })
   inStore: boolean;
 
@@ -63,13 +67,12 @@ export class AgentBlock {
   @OneToMany(() => TaskBlock, (taskBlock) => taskBlock.agentBlock)
   taskBlocks: TaskBlock[];
 
-  // @ManyToMany(() => Review)
-  // @JoinTable()
-  // reviews: Review[];
-
   @OneToMany(() => AgentTag, (agentTag) => agentTag.agentBlock)
   agentTags: AgentTag[];
 
   @OneToMany(() => Review, (review) => review.agentBlock)
   reviews: Review[];
+
+  @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.agent)
+  orderDetails: OrderDetails[];
 }

@@ -36,7 +36,7 @@ export class CreateAgentBlockDto {
   description: string;
 
   @ApiProperty({
-    example: '10.000 KR',
+    example: '10000 KR',
     description: 'The price of the agent number:string',
     required: true,
   })
@@ -61,7 +61,7 @@ export class CreateAgentBlockDto {
   // @IsString()
   // crafter: User;
 
-  toEntity(user: User) {
+  toEntity(user: User, realPrice: number) {
     const agentBlock = new AgentBlock();
     agentBlock.properties = this.properties;
     agentBlock.contents = [];
@@ -70,6 +70,7 @@ export class CreateAgentBlockDto {
     agentBlock.price = this.price;
     agentBlock.thumbnail_img = this.thumbnail_img;
     agentBlock.crafter = Promise.resolve(user);
+    agentBlock.realPrice = realPrice;
     return agentBlock;
   }
 }

@@ -9,6 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
+import { Order } from '../../orders/entities/order.entity';
+import { Payment } from '../../payments/entities/payment.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -46,4 +48,10 @@ export class User extends BaseEntity {
     eager: true,
   })
   agentBlocks: AgentBlock[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  paymentCards: Payment[];
 }

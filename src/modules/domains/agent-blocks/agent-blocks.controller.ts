@@ -10,6 +10,7 @@ import {
   Logger,
   Query,
   ParseUUIDPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { AgentBlocksService } from './services/agent-blocks.service';
 import { CreateAgentBlockDto } from './dto/create-agent-block.dto';
@@ -40,8 +41,21 @@ export class AgentBlocksController {
       `createAgentBlockDto: ${JSON.stringify(createAgentBlockDto)}`,
       `user: ${JSON.stringify(user)}`,
     );
+    let realPrice: number;
+    try {
+      const { price } = createAgentBlockDto;
+      realPrice = Number(price.split(' ')[0]);
+      if (isNaN(realPrice)) {
+        throw new Error('price is not a number');
+      }
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException(
+        `price format is not correct. ${createAgentBlockDto.price}. It has to be price + ' ' + currency. ex) 10000 KR`,
+      );
+    }
     return await this.agentBlocksService.create(
-      createAgentBlockDto.toEntity(user),
+      createAgentBlockDto.toEntity(user, realPrice),
       user,
     );
   }
