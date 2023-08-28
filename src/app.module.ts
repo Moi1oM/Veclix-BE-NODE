@@ -13,6 +13,9 @@ import { TagsModule } from './modules/domains/tags/tags.module';
 import { AgentTagsModule } from './modules/domains/agent_tags/agent_tags.module';
 import { UserScrapsModule } from './modules/domains/user-scraps/user-scraps.module';
 import { ReviewsModule } from './modules/domains/reviews/reviews.module';
+import { OrdersModule } from './modules/domains/orders/orders.module';
+import { OrderDetailsModule } from './modules/domains/order-details/order-details.module';
+import { PaymentsModule } from './modules/domains/payments/payments.module';
 
 @Module({
   imports: [
@@ -38,6 +41,9 @@ import { ReviewsModule } from './modules/domains/reviews/reviews.module';
     AgentTagsModule,
     UserScrapsModule,
     ReviewsModule,
+    OrdersModule,
+    OrderDetailsModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
