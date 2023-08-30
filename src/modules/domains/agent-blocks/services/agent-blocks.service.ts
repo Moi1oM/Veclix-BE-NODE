@@ -88,7 +88,10 @@ export class AgentBlocksService {
   }
 
   async findAll() {
-    return await this.agentBlockRepository.find({ relations: ['crafter'] });
+    return await this.agentBlockRepository.find({
+      where: { inStore: true },
+      relations: ['crafter'],
+    });
   }
 
   async findOneByAgentIdOrException(agentId: string) {

@@ -15,7 +15,7 @@ import { AgentBlockProperties } from './agent-block.schema';
 import { AgentTag } from '../../agent_tags/entities/agent_tag.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { OrderDetails } from '../../order-details/entities/order-detail.entity';
-
+import { Cycle } from '../../cycles/entities/cycle.entity';
 @Entity('agent_blocks')
 export class AgentBlock {
   // BASIC COLUMNS
@@ -75,4 +75,7 @@ export class AgentBlock {
 
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.agent)
   orderDetails: OrderDetails[];
+
+  @OneToMany(() => Cycle, (cycle) => cycle.agentBlock)
+  cycles: Cycle[];
 }

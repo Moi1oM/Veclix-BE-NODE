@@ -15,8 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserQueryDto } from './dto/dquery-user.dto';
-import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
-
+import { BasicAuthGuard } from '../../functions/auth/guard/basic-auth.guard';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {

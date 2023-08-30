@@ -13,6 +13,8 @@ import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
 import { User } from '../../users/entities/user.entity';
 import { TaskBlockProperties } from './task-block.schema';
 import { ToolBlock } from '../../tool-blocks/entities/tool-block.entity';
+import { Cycle } from '../../cycles/entities/cycle.entity';
+import { Run } from '../../runs/entities/run.entity';
 
 @Entity('task_blocks')
 export class TaskBlock {
@@ -47,4 +49,10 @@ export class TaskBlock {
 
   @OneToMany(() => ToolBlock, (toolBlock) => toolBlock.taskBlock)
   toolBlocks: ToolBlock[];
+
+  @OneToMany(() => Cycle, (cycle) => cycle.currentTask)
+  cycles: Cycle[];
+
+  @OneToMany(() => Run, (run) => run.taskBlock)
+  runs: Run[];
 }

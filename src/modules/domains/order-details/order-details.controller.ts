@@ -12,7 +12,7 @@ import { OrderDetailsService } from './order-details.service';
 import { CreateOrderDetailDto } from './dto/create-order-detail.dto';
 import { UpdateOrderDetailDto } from './dto/update-order-detail.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
+import { BasicAuthGuard } from '../../functions/auth/guard/basic-auth.guard';
 import { CurrentUser } from 'src/commons/common/decorators/user.decorator';
 import { User } from '../users/entities/user.entity';
 
