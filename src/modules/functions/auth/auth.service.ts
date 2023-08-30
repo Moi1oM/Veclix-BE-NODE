@@ -7,7 +7,7 @@ import {
 import axios from 'axios';
 import { CreateUserDto } from 'src/modules/domains/users/dto/create-user.dto';
 import { User } from 'src/modules/domains/users/entities/user.entity';
-import { UsersService } from 'src/modules/domains/users/services/users.service';
+import { UsersService } from './../../domains/users/services/users.service';
 
 @Injectable()
 export class AuthService {

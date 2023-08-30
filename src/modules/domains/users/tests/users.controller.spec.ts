@@ -36,6 +36,10 @@ describe('UsersController', () => {
       test('then it should call usersService', () => {
         expect(usersService.findOne).toBeCalledWith(userStub().id);
       });
+
+      test('then it should return a user', () => {
+        expect(user).toEqual(userStub());
+      });
     });
   });
 });

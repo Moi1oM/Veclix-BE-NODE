@@ -31,6 +31,30 @@ export class Run {
   @Column({ type: 'uuid', nullable: false })
   cycle_id: string;
 
+  @Column({ type: 'uuid', nullable: false })
+  task_block_id: string;
+
+  @Column({ type: 'text', nullable: true })
+  input: string;
+
+  @Column({ type: 'text', nullable: true })
+  output: string;
+
+  @Column({ type: 'int4', nullable: false })
+  input_toekn: number;
+
+  @Column({ type: 'int4', nullable: false })
+  output_token: number;
+
+  @Column({ type: 'int4', nullable: false })
+  total_token: number;
+
+  @Column({ type: 'text', nullable: false })
+  total_cost: string;
+
+  @Column({ type: 'float4', nullable: true })
+  duration: number;
+
   // RELATIONS
   @ManyToOne(() => Cycle, (cycle) => cycle.runs, {
     onDelete: 'CASCADE',
