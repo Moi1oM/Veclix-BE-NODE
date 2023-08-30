@@ -12,6 +12,7 @@ import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { Payment } from '../../payments/entities/payment.entity';
 import { UserTool } from '../../user-tools/entities/user-tool.entity';
+import { EmpAgent } from '../../emp-agents/entities/emp-agent.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -58,4 +59,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => UserTool, (userTool) => userTool.user)
   userTools: UserTool[];
+
+  @OneToMany(() => EmpAgent, (empAgent) => empAgent.owner)
+  empAgents: EmpAgent[];
 }
