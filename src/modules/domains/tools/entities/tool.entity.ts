@@ -36,6 +36,9 @@ export class Tool {
   @Column({ type: 'text', nullable: true })
   custom_funciton: string;
 
+  @Column({ type: 'text', nullable: true })
+  function_name: string;
+
   @Column({ type: 'enum', enum: ApiOwner, default: ApiOwner.User })
   api_owner: ApiOwner;
 

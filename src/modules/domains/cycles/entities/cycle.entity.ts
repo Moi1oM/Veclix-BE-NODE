@@ -13,6 +13,7 @@ import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
 import { CycleStatus, CycleTimeZones, CycleType } from './cycle.enum';
 import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
 import { Run } from '../../runs/entities/run.entity';
+import { Message } from '../../messages/entities/message.entity';
 @Entity()
 export class Cycle {
   // BASIC COLUMNS
@@ -75,4 +76,7 @@ export class Cycle {
 
   @OneToMany(() => Run, (run) => run.cycle)
   runs: Promise<Run[]>;
+
+  @OneToMany(() => Message, (message) => message.cycle)
+  messages: Promise<Message[]>;
 }

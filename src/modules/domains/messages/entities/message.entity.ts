@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { MessageRole } from './message.enum';
+import { Cycle } from '../../cycles/entities/cycle.entity';
 
 @Entity()
 export class Message {
@@ -42,6 +43,11 @@ export class Message {
   message_json: JSON;
 
   // RELATIONS
+  @ManyToOne(() => Cycle, (cycle) => cycle.messages, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  cycle: Cycle;
 
   // METHODS
 }
