@@ -16,6 +16,21 @@ export class TaskBlocksService {
     private readonly agentBlocksService: AgentBlocksService,
   ) {}
 
+  async findAllWithAgentId(agentId: string): Promise<TaskBlock[]> {
+    const taskBlocks = await this.taskBlockRepository.find({
+      where: {
+        agentBlockId: agentId,
+      },
+    });
+    if (taskBlocks.length == 0) {
+      throw new HttpException(
+        `TaskBlock with agentId:${agentId} not found`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return taskBlocks;
+  }
+
   async findByIdOrException(id: string) {
     const foundTaskBlock = await this.taskBlockRepository.findOne({
       where: { id: id },

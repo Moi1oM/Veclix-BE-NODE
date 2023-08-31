@@ -15,8 +15,8 @@ import { EmpAgentLanguage, EmpAgentStatus } from './emp-agent.enum';
 @Entity()
 export class EmpAgent {
   // BASIC COLUMNS
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

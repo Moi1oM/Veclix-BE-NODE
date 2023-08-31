@@ -6,53 +6,77 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { EmpAgentsService } from './emp-agents.service';
 import { CreateEmpAgentDto } from './dto/create-emp-agent.dto';
 import { UpdateEmpAgentDto } from './dto/update-emp-agent.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { EmpAgentQuery } from './dto/dquery-emp-agent.dto';
+import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
 
 @ApiTags('emp-agents')
+@ApiBearerAuth('access-token')
+@UseGuards(BasicAuthGuard)
 @Controller('emp-agents')
 export class EmpAgentsController {
   constructor(private readonly empAgentsService: EmpAgentsService) {}
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'creating employed agent',
+    description: 'creating employed agent.',
   })
   @Post()
-  create(@Body() createEmpAgentDto: CreateEmpAgentDto) {
-    return this.empAgentsService.create(createEmpAgentDto);
+  async create(@Body() createEmpAgentDto: CreateEmpAgentDto) {
+    return await this.empAgentsService.create(createEmpAgentDto);
   }
+
   @ApiOperation({
-    deprecated: true,
+    summary: 'get all employed agents',
+    description: 'get all employed agents.',
   })
-  @Get()
-  findAll() {
-    return this.empAgentsService.findAll();
+  @Get('all')
+  async findAll() {
+    return await this.empAgentsService.findAll();
   }
+
   @ApiOperation({
-    deprecated: true,
+    summary: 'get employed agent by id',
+    description: 'get employed agent by id. 400 error if not found.',
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.empAgentsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.empAgentsService.findOneByIdOrException(id);
   }
+
   @ApiOperation({
-    deprecated: true,
+    summary: 'get employed agent by query',
+    description: 'get employed agent by query.',
+  })
+  @Get()
+  async getByQuery(@Query() query: EmpAgentQuery) {
+    return await this.empAgentsService.getByQuery(query);
+  }
+
+  @ApiOperation({
+    summary: 'update employed agent by id',
+    description: 'update employed agent by id. 400 error if not found.',
   })
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateEmpAgentDto: UpdateEmpAgentDto,
   ) {
-    return this.empAgentsService.update(+id, updateEmpAgentDto);
+    return await this.empAgentsService.update(id, updateEmpAgentDto);
   }
+
   @ApiOperation({
-    deprecated: true,
+    summary: 'delete employed agent by id',
+    description: 'delete employed agent by id. 400 error if not found.',
   })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.empAgentsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.empAgentsService.remove(id);
   }
 }

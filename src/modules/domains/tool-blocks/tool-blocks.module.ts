@@ -14,5 +14,6 @@ import { ToolBlock } from './entities/tool-block.entity';
   ],
   controllers: [ToolBlocksController],
   providers: [ToolBlocksService],
+  exports: [ToolBlocksService],
 })
 export class ToolBlocksModule {}

@@ -7,6 +7,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { EmpAgentLanguage, EmpAgentStatus } from '../entities/emp-agent.enum';
 
 export class CreateEmpAgentDto {
   @ApiProperty({
@@ -50,7 +51,7 @@ export class CreateEmpAgentDto {
   })
   @IsOptional()
   @IsString()
-  language: string;
+  language: EmpAgentLanguage;
 
   @ApiProperty({
     example: ['github', 'slack'],
@@ -77,7 +78,7 @@ export class CreateEmpAgentDto {
   })
   @IsNotEmpty()
   @IsString()
-  status: string;
+  status: EmpAgentStatus;
 
   @ApiPropertyOptional({
     example: {

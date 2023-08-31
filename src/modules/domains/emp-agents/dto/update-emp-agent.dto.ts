@@ -2,6 +2,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreateEmpAgentDto } from './create-emp-agent.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
+import { EmpAgentLanguage, EmpAgentStatus } from '../entities/emp-agent.enum';
 
 export class UpdateEmpAgentDto {
   @ApiPropertyOptional({
@@ -27,7 +28,7 @@ export class UpdateEmpAgentDto {
   })
   @IsOptional()
   @IsString()
-  language: string;
+  language: EmpAgentLanguage;
 
   @ApiPropertyOptional({
     example: ['github', 'slack'],
@@ -54,7 +55,7 @@ export class UpdateEmpAgentDto {
   })
   @IsOptional()
   @IsString()
-  status: string;
+  status: EmpAgentStatus;
 
   @ApiPropertyOptional({
     example: {

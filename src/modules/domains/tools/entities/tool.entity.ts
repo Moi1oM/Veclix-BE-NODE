@@ -13,8 +13,8 @@ import { UserTool } from '../../user-tools/entities/user-tool.entity';
 @Entity()
 export class Tool {
   // BASIC COLUMNS
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

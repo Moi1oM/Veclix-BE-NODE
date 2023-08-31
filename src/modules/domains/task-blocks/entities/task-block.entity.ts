@@ -38,13 +38,19 @@ export class TaskBlock {
   @Column('text', { array: true, nullable: true, default: [] })
   contents: string[];
 
+  @Column('int4', { nullable: true })
+  crafterId: string;
+
+  @Column('uuid', { nullable: true })
+  agentBlockId: string;
+
   // RELATIONS
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'crafter' })
+  @JoinColumn({ name: 'crafterId' })
   crafter: Promise<User>;
 
   @ManyToOne(() => AgentBlock, (agentBlock) => agentBlock.taskBlocks)
-  @JoinColumn({ name: 'agent_block' })
+  @JoinColumn({ name: 'agentBlockId' })
   agentBlock: Promise<AgentBlock>;
 
   @OneToMany(() => ToolBlock, (toolBlock) => toolBlock.taskBlock)
