@@ -19,6 +19,7 @@ export class ToolBlocksService {
     const foundToolBlock = await this.toolBlockRepository.findOne({
       where: { id: id },
       relations: ['taskBlock'],
+      order: { updatedAt: 'DESC' },
     });
     if (!foundToolBlock) {
       throw new HttpException(
@@ -33,6 +34,7 @@ export class ToolBlocksService {
     const toolBlocksList: ToolBlock[] = await this.toolBlockRepository.find({
       where: query,
       relations: ['taskBlock'],
+      order: { updatedAt: 'DESC' },
     });
     if (toolBlocksList.length == 0) {
       throw new HttpException(
@@ -53,6 +55,7 @@ export class ToolBlocksService {
   async findAll() {
     return await this.toolBlockRepository.find({
       relations: ['taskBlock'],
+      order: { updatedAt: 'DESC' },
     });
   }
 

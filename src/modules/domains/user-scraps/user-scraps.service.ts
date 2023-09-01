@@ -18,6 +18,7 @@ export class UserScrapsService {
     const { agent_uuid, user_id } = createUserScrapDto;
     const userScrap = await this.userScrapRepository.findOne({
       where: { agent_uuid, user_id },
+      order: { created_at: 'DESC' },
     });
     if (userScrap) {
       await this.userScrapRepository.delete(userScrap.id);
@@ -40,6 +41,7 @@ export class UserScrapsService {
     }
     const userScrap = await this.userScrapRepository.findOne({
       where: realQuery,
+      order: { created_at: 'DESC' },
     });
     if (!userScrap) {
       throw new HttpException(
@@ -64,6 +66,7 @@ export class UserScrapsService {
   async findUserScrappedAgents(user_id: number) {
     const userScraps = await this.userScrapRepository.find({
       where: { user_id },
+      order: { created_at: 'DESC' },
     });
     return userScraps;
   }

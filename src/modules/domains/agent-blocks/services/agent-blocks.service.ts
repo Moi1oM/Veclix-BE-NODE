@@ -91,6 +91,7 @@ export class AgentBlocksService {
     return await this.agentBlockRepository.find({
       where: { inStore: true },
       relations: ['crafter'],
+      order: { updatedAt: 'DESC' },
     });
   }
 
@@ -98,6 +99,7 @@ export class AgentBlocksService {
     const foundAgent = await this.agentBlockRepository.findOne({
       where: { id: agentId },
       relations: ['crafter'],
+      order: { updatedAt: 'DESC' },
     });
     if (!foundAgent) {
       throw new HttpException(

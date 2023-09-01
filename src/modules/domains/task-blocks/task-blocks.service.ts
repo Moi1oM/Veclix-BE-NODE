@@ -21,6 +21,7 @@ export class TaskBlocksService {
       where: {
         agentBlockId: agentId,
       },
+      order: { updatedAt: 'DESC' },
     });
     if (taskBlocks.length == 0) {
       throw new HttpException(
@@ -35,6 +36,7 @@ export class TaskBlocksService {
     const foundTaskBlock = await this.taskBlockRepository.findOne({
       where: { id: id },
       relations: ['agentBlock'],
+      order: { updatedAt: 'DESC' },
     });
     console.log(foundTaskBlock.crafter);
     if (!foundTaskBlock) {
@@ -69,6 +71,7 @@ export class TaskBlocksService {
     const taskBlocksList: TaskBlock[] = await this.taskBlockRepository.find({
       where: query,
       relations: ['crafter'],
+      order: { updatedAt: 'DESC' },
     });
     if (taskBlocksList.length == 0) {
       throw new HttpException(

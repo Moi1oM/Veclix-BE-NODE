@@ -56,6 +56,7 @@ export class OrderDetailsService {
   async findOrderDetailOrException(id: number): Promise<OrderDetails> {
     const orderDetail = await this.orderDetailsRepository.findOne({
       where: { id: id },
+      order: { updatedAt: 'DESC' },
     });
     if (!orderDetail) {
       throw new HttpException('order detail not found', HttpStatus.NOT_FOUND);

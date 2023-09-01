@@ -36,7 +36,7 @@ export class OrdersService {
   }
 
   async findAll() {
-    return await this.orderRepository.find();
+    return await this.orderRepository.find({ order: { updatedAt: 'DESC' } });
   }
 
   async findMyOrders(userId: number): Promise<Order[]> {
@@ -51,7 +51,10 @@ export class OrdersService {
   }
 
   async findOne(id: number): Promise<Order> {
-    return await this.orderRepository.findOne({ where: { id: id } });
+    return await this.orderRepository.findOne({
+      where: { id: id },
+      order: { updatedAt: 'DESC' },
+    });
   }
 
   async update(id: number, updateOrderDto: UpdateOrderDto) {

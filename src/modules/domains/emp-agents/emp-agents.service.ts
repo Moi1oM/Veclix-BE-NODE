@@ -74,7 +74,10 @@ export class EmpAgentsService {
   }
 
   async getByQuery(query: any): Promise<EmpAgent[]> {
-    return await this.empAgentRepository.find({ where: query });
+    return await this.empAgentRepository.find({
+      where: query,
+      order: { updatedAt: 'DESC' },
+    });
   }
 
   async update(

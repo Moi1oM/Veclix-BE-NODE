@@ -20,7 +20,10 @@ export class TagsService {
   }
 
   async findOneOrCreate(name: string) {
-    const tag = await this.tagsRepository.findOne({ where: { name: name } });
+    const tag = await this.tagsRepository.findOne({
+      where: { name: name },
+      order: { createdAt: 'DESC' },
+    });
     if (tag) {
       return tag;
     }
