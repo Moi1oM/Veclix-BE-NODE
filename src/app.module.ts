@@ -16,6 +16,12 @@ import { ReviewsModule } from './modules/domains/reviews/reviews.module';
 import { OrdersModule } from './modules/domains/orders/orders.module';
 import { OrderDetailsModule } from './modules/domains/order-details/order-details.module';
 import { PaymentsModule } from './modules/domains/payments/payments.module';
+import { CyclesModule } from './modules/domains/cycles/cycles.module';
+import { EmpAgentsModule } from './modules/domains/emp-agents/emp-agents.module';
+import { MessagesModule } from './modules/domains/messages/messages.module';
+import { RunsModule } from './modules/domains/runs/runs.module';
+import { ToolsModule } from './modules/domains/tools/tools.module';
+import { UserToolsModule } from './modules/domains/user-tools/user-tools.module';
 
 @Module({
   imports: [
@@ -44,6 +50,12 @@ import { PaymentsModule } from './modules/domains/payments/payments.module';
     OrdersModule,
     OrderDetailsModule,
     PaymentsModule,
+    CyclesModule,
+    EmpAgentsModule,
+    MessagesModule,
+    RunsModule,
+    ToolsModule,
+    UserToolsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
