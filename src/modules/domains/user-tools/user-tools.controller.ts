@@ -6,13 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserToolsService } from './user-tools.service';
 import { CreateUserToolDto } from './dto/create-user-tool.dto';
 import { UpdateUserToolDto } from './dto/update-user-tool.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
 
 @ApiTags('user-tools')
+@ApiBearerAuth('access-token')
+@UseGuards(BasicAuthGuard)
 @Controller('user-tools')
 export class UserToolsController {
   constructor(private readonly userToolsService: UserToolsService) {}
@@ -38,7 +42,7 @@ export class UserToolsController {
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userToolsService.findOne(+id);
+    return this.userToolsService.findOneByIdOrException(+id);
   }
 
   @ApiOperation({

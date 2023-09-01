@@ -18,7 +18,8 @@ export class ToolsController {
   constructor(private readonly toolsService: ToolsService) {}
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'creating tool',
+    description: 'creating tool. with auth & post body.',
   })
   @Post()
   create(@Body() createToolDto: CreateToolDto) {
@@ -26,23 +27,26 @@ export class ToolsController {
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'get all tools',
+    description: 'get all tools. with auth.',
   })
-  @Get()
+  @Get('all')
   findAll() {
     return this.toolsService.findAll();
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'get tool by id',
+    description: 'get tool by id. 400 error if not found.',
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.toolsService.findOne(id);
+    return this.toolsService.findOneByIdOrException(id);
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'update tool by id',
+    description: 'update tool by id. 400 error if not found.',
   })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateToolDto: UpdateToolDto) {
@@ -50,7 +54,8 @@ export class ToolsController {
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'delete tool by id',
+    description: 'delete tool by id. 400 error if not found.',
   })
   @Delete(':id')
   remove(@Param('id') id: string) {

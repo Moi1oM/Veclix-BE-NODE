@@ -8,6 +8,7 @@ import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
 import { ToolBlocksModule } from '../tool-blocks/tool-blocks.module';
 import { TaskBlocksModule } from '../task-blocks/task-blocks.module';
 import { ToolsModule } from '../tools/tools.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ToolsModule } from '../tools/tools.module';
     ToolBlocksModule,
     TaskBlocksModule,
     ToolsModule,
+    UsersModule,
   ],
   controllers: [EmpAgentsController],
   providers: [EmpAgentsService],

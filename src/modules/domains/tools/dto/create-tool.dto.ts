@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { ApiOwner } from '../../tool-blocks/entities/tool-block.schema';
 
 export class CreateToolDto {
   @ApiProperty({
@@ -40,7 +41,7 @@ export class CreateToolDto {
   })
   @IsString()
   @IsNotEmpty()
-  api_owner: string;
+  api_owner: ApiOwner;
 
   @ApiProperty({
     description: 'the name of the function in llm server',

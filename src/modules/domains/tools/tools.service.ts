@@ -25,23 +25,23 @@ export class ToolsService {
     return tool;
   }
 
-  async create(createToolDto: CreateToolDto) {
-    return 'This action adds a new tool';
+  async create(createToolDto: CreateToolDto): Promise<Tool> {
+    return await this.toolRepository.save(createToolDto);
   }
 
-  async findAll() {
-    return `This action returns all tools`;
+  async findAll(): Promise<Tool[]> {
+    return await this.toolRepository.find();
   }
 
-  async findOne(id: string) {
-    return `This action returns a #${id} tool`;
+  async update(id: string, updateToolDto: UpdateToolDto): Promise<Tool> {
+    await this.findOneByIdOrException(id);
+    await this.toolRepository.update(id, updateToolDto);
+    return await this.findOneByIdOrException(id);
   }
 
-  async update(id: string, updateToolDto: UpdateToolDto) {
-    return `This action updates a #${id} tool`;
-  }
-
-  async remove(id: string) {
-    return `This action removes a #${id} tool`;
+  async remove(id: string): Promise<Tool> {
+    const tool = await this.findOneByIdOrException(id);
+    await this.toolRepository.delete(id);
+    return tool;
   }
 }

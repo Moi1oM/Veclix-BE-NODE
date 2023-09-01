@@ -8,6 +8,7 @@ import { AgentBlocksService } from '../agent-blocks/services/agent-blocks.servic
 import { ToolBlocksService } from '../tool-blocks/services/tool-blocks.service';
 import { TaskBlocksService } from '../task-blocks/task-blocks.service';
 import { ToolsService } from '../tools/tools.service';
+import { UsersService } from '../users/services/users.service';
 
 @Injectable()
 export class EmpAgentsService {
@@ -15,9 +16,11 @@ export class EmpAgentsService {
   constructor(
     @InjectRepository(EmpAgent)
     private readonly empAgentRepository: Repository<EmpAgent>,
+    private readonly agentBlocksService: AgentBlocksService,
     private readonly taskBlocksService: TaskBlocksService,
     private readonly toolBlocksService: ToolBlocksService,
     private readonly toolsService: ToolsService,
+    private readonly usersServce: UsersService,
   ) {}
 
   async getToolsListWithAgentId(agentId: string): Promise<string[]> {
@@ -53,7 +56,16 @@ export class EmpAgentsService {
       createEmpAgentDto.agent_class_id,
     );
     createEmpAgentDto.tools = toolNameArray;
-    return await this.empAgentRepository.save(createEmpAgentDto);
+    const user = await this.usersServce.findOne(createEmpAgentDto.userId);
+    const agentBlock = await this.agentBlocksService.findOne(
+      createEmpAgentDto.agent_class_id,
+    );
+    const empAgent = {
+      ...createEmpAgentDto,
+      user,
+      agentBlock,
+    };
+    return await this.empAgentRepository.save(empAgent);
   }
 
   async findOneByIdOrException(id: string): Promise<EmpAgent> {

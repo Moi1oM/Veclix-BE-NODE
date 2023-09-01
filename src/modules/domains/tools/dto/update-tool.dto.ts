@@ -2,6 +2,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreateToolDto } from './create-tool.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
+import { ApiOwner } from '../../tool-blocks/entities/tool-block.schema';
 
 export class UpdateToolDto {
   @ApiPropertyOptional({
@@ -42,7 +43,7 @@ export class UpdateToolDto {
   })
   @IsString()
   @IsOptional()
-  api_owner: string;
+  api_owner: ApiOwner;
 
   @ApiPropertyOptional({
     description: 'the name of the function in llm server',
