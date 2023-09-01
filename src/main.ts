@@ -4,6 +4,7 @@ import { SuccessInterceptor } from './commons/common/interceptors/success.interc
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './commons/common/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { GlobalErrorFilter } from './commons/common/filters/global-error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,7 @@ async function bootstrap() {
 
   //Filter Setting
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new GlobalErrorFilter());
 
   //ValidationPipe Setting
   app.useGlobalPipes(
