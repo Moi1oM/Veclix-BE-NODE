@@ -21,12 +21,6 @@ interface NotionResponse {
   [key: string]: any;
 }
 
-const SLACK_OAUTH_CLIENT_ID = process.env.SLACK_OAUTH_CLIENT_ID;
-const SLACK_OAUTH_CLIENT_SECRET = process.env.SLACK_OAUTH_CLIENT_SECRET;
-const SLACK_OAUTH_REDIRECT_URI = process.env.SLACK_OAUTH_REDIRECT_URI;
-const NOTION_OAUTH_AUTH_KEY = process.env.NOTION_OAUTH_AUTH_KEY;
-const NOTION_OAUTH_REDIRECT_URI = process.env.NOTION_OAUTH_REDIRECT_URI;
-
 @Injectable()
 export class UserToolsService {
   constructor(
@@ -39,6 +33,10 @@ export class UserToolsService {
     authCode: string,
   ): Promise<UserToolResponse> {
     const url = 'https://slack.com/api/oauth.v2.access';
+
+    const SLACK_OAUTH_CLIENT_ID = process.env.SLACK_OAUTH_CLIENT_ID;
+    const SLACK_OAUTH_CLIENT_SECRET = process.env.SLACK_OAUTH_CLIENT_SECRET;
+    const SLACK_OAUTH_REDIRECT_URI = process.env.SLACK_OAUTH_REDIRECT_URI;
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
@@ -66,7 +64,7 @@ export class UserToolsService {
       const userTool = await this.saveTokenToDb(responseJson, user, 'slack');
       return { userTool, oauthResposne: responseJson };
     } catch (error) {
-      throw new Error(`Slack OAuth failed: ${error}`);
+      throw new HttpException(`${error}`, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -128,16 +126,17 @@ export class UserToolsService {
   ): Promise<UserToolResponse> {
     try {
       const baseUrl = 'https://api.notion.com/v1/oauth/token';
-
+      const notionKey = process.env.NOTION_OAUTH_AUTH_KEY;
+      const notionRedirect = process.env.NOTION_OAUTH_REDIRECT_URI;
       const authHeaders = {
-        Authorization: `Basic ${NOTION_OAUTH_AUTH_KEY}`,
+        Authorization: `Basic ${notionKey}`,
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       };
 
       const authData = {
         grant_type: 'authorization_code',
         code: authCode,
-        redirect_uri: NOTION_OAUTH_REDIRECT_URI,
+        redirect_uri: notionRedirect,
       };
 
       const authResp = await axios.post<NotionResponse>(
@@ -160,7 +159,7 @@ export class UserToolsService {
       return { userTool, oauthResposne: notionAccessJson };
     } catch (error) {
       console.error(error);
-      throw error;
+      throw new HttpException(`${error}`, HttpStatus.BAD_REQUEST);
     }
   }
 }
