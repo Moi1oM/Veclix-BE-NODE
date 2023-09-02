@@ -4,13 +4,13 @@ import { IsNotEmpty, IsObject, IsString, IsUUID } from 'class-validator';
 export class CreateUserToolDto {
   @ApiProperty({
     description: 'The user_id of the UserTool',
-    type: String,
+    type: Number,
     required: true,
-    example: '12',
+    example: 12,
   })
   @IsNotEmpty()
   @IsString()
-  user_id: string;
+  user_id: number;
 
   @ApiProperty({
     description: 'The tool_id of the UserTool',

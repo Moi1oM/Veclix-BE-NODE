@@ -6,13 +6,13 @@ import { IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
 export class UpdateUserToolDto {
   @ApiPropertyOptional({
     description: 'The user_id of the UserTool',
-    type: String,
+    type: Number,
     required: true,
     example: '12',
   })
   @IsOptional()
   @IsString()
-  user_id: string;
+  user_id: number;
 
   @ApiPropertyOptional({
     description: 'The metadata of the UserTool',

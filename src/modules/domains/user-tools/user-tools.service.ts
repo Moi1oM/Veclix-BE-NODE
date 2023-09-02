@@ -4,6 +4,28 @@ import { UpdateUserToolDto } from './dto/update-user-tool.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserTool } from './entities/user-tool.entity';
 import { Repository } from 'typeorm';
+import axios from 'axios';
+import { User } from '../users/entities/user.entity';
+interface SlackResponse {
+  ok: boolean;
+  error?: string;
+  [key: string]: any;
+}
+
+export interface UserToolResponse {
+  userTool: UserTool;
+  oauthResposne: SlackResponse | NotionResponse;
+}
+interface NotionResponse {
+  error?: string;
+  [key: string]: any;
+}
+
+const SLACK_OAUTH_CLIENT_ID = process.env.SLACK_OAUTH_CLIENT_ID;
+const SLACK_OAUTH_CLIENT_SECRET = process.env.SLACK_OAUTH_CLIENT_SECRET;
+const SLACK_OAUTH_REDIRECT_URI = process.env.SLACK_OAUTH_REDIRECT_URI;
+const NOTION_OAUTH_AUTH_KEY = process.env.NOTION_OAUTH_AUTH_KEY;
+const NOTION_OAUTH_REDIRECT_URI = process.env.NOTION_OAUTH_REDIRECT_URI;
 
 @Injectable()
 export class UserToolsService {
@@ -12,12 +34,64 @@ export class UserToolsService {
     private readonly userToolRepository: Repository<UserTool>,
   ) {}
 
+  async makeSlackOAuthUserTools(
+    user: User,
+    authCode: string,
+  ): Promise<UserToolResponse> {
+    const url = 'https://slack.com/api/oauth.v2.access';
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    const authData = {
+      client_id: SLACK_OAUTH_CLIENT_ID,
+      client_secret: SLACK_OAUTH_CLIENT_SECRET,
+      code: authCode,
+      redirect_uri: SLACK_OAUTH_REDIRECT_URI,
+      grant_type: 'authorization_code',
+    };
+
+    try {
+      const response = await axios.post<SlackResponse>(
+        url,
+        new URLSearchParams(authData).toString(),
+        { headers },
+      );
+      const responseJson = response.data;
+
+      if (!responseJson.ok) {
+        throw new Error(responseJson.error);
+      }
+
+      const userTool = await this.saveTokenToDb(responseJson, user, 'slack');
+      return { userTool, oauthResposne: responseJson };
+    } catch (error) {
+      throw new Error(`Slack OAuth failed: ${error}`);
+    }
+  }
+
+  async saveTokenToDb(
+    response,
+    user: User,
+    toolSetName: string,
+  ): Promise<UserTool> {
+    const data = {
+      metadata: response,
+      user_id: user.id,
+      user: user,
+      tool_set: toolSetName,
+    };
+    return await this.userToolRepository.save(data);
+  }
+
   async create(createUserToolDto: CreateUserToolDto): Promise<UserTool> {
     return await this.userToolRepository.save(createUserToolDto);
   }
 
-  async findAll(): Promise<UserTool[]> {
-    return await this.userToolRepository.find();
+  async findAll(userId: number): Promise<UserTool[]> {
+    return await this.userToolRepository.find({
+      where: { user_id: userId },
+    });
   }
 
   async findOneByIdOrException(id: number): Promise<UserTool> {
@@ -46,5 +120,47 @@ export class UserToolsService {
     const userTool = await this.findOneByIdOrException(id);
     await this.userToolRepository.delete(id);
     return userTool;
+  }
+
+  async makeNotionOAuthUserTools(
+    user: User,
+    authCode: string,
+  ): Promise<UserToolResponse> {
+    try {
+      const baseUrl = 'https://api.notion.com/v1/oauth/token';
+
+      const authHeaders = {
+        Authorization: `Basic ${NOTION_OAUTH_AUTH_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      };
+
+      const authData = {
+        grant_type: 'authorization_code',
+        code: authCode,
+        redirect_uri: NOTION_OAUTH_REDIRECT_URI,
+      };
+
+      const authResp = await axios.post<NotionResponse>(
+        baseUrl,
+        new URLSearchParams(authData).toString(),
+        { headers: authHeaders },
+      );
+      const notionAccessJson = authResp.data;
+
+      if (notionAccessJson.error) {
+        throw new Error(notionAccessJson.error);
+      }
+
+      notionAccessJson.auth_code = authCode;
+      const userTool = await this.saveTokenToDb(
+        notionAccessJson,
+        user,
+        'notion',
+      );
+      return { userTool, oauthResposne: notionAccessJson };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }

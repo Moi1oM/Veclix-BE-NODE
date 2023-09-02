@@ -34,7 +34,7 @@ export class UserTool {
   tool_id: string;
 
   @Column({ type: 'int', nullable: true })
-  user_id: string;
+  user_id: number;
 
   @Column({ type: 'varchar', default: false })
   tool_set: string;
