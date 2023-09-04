@@ -23,6 +23,20 @@ export class EmpAgentsService {
     private readonly usersServce: UsersService,
   ) {}
 
+  async findMyEmpAgent(userId: number): Promise<EmpAgent[]> {
+    const empAgent = await this.empAgentRepository.find({
+      where: { ownerId: userId },
+      relations: ['cycles'],
+    });
+    if (!empAgent) {
+      throw new HttpException(
+        `empAgent with userId ${userId} not found`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return empAgent;
+  }
+
   async findByUserIdOrException(userId: number): Promise<EmpAgent[]> {
     const empAgent = await this.empAgentRepository.find({
       where: { ownerId: userId },

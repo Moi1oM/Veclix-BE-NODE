@@ -15,6 +15,8 @@ import { UpdateEmpAgentDto } from './dto/update-emp-agent.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { EmpAgentQuery } from './dto/dquery-emp-agent.dto';
 import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
+import { CurrentUser } from 'src/commons/common/decorators/user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @ApiTags('emp-agents')
 @ApiBearerAuth('access-token')
@@ -39,6 +41,15 @@ export class EmpAgentsController {
   @Get('all')
   async findAll() {
     return await this.empAgentsService.findAll();
+  }
+
+  @ApiOperation({
+    summary: 'get employed agent by agentId',
+    description: 'get employed agent by agentId. user id is from token.',
+  })
+  @Get('@me')
+  async findMyEmpAgent(@CurrentUser() user: User) {
+    return await this.empAgentsService.findMyEmpAgent(user.id);
   }
 
   @ApiOperation({

@@ -11,7 +11,6 @@ import { UpdateAgentBlockDto } from '../dto/update-agent-block.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AgentBlock } from '../entities/agent-block.entity';
 import { Repository } from 'typeorm';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 import { UsersService } from '../../users/services/users.service';
 import { UsersRelatedAgentBlockService } from '../../users/services/usersAgentBlock.service';
 import { User } from '../../users/entities/user.entity';
@@ -30,6 +29,24 @@ export class AgentBlocksService {
     @Inject(forwardRef(() => ReviewsService))
     private readonly reveiwsService: ReviewsService,
   ) {}
+
+  async addContentToAgentBlock(
+    agentBlockId: string,
+    content: string,
+  ): Promise<AgentBlock> {
+    const agentBlock = await this.findOneByAgentIdOrException(agentBlockId);
+    agentBlock.contents.push(content);
+    return await this.agentBlockRepository.save(agentBlock);
+  }
+
+  async removeContentFromAgentBlock(
+    agentBlockId: string,
+    content: string,
+  ): Promise<AgentBlock> {
+    const agentBlock = await this.findOneByAgentIdOrException(agentBlockId);
+    agentBlock.contents = agentBlock.contents.filter((c) => c !== content);
+    return await this.agentBlockRepository.save(agentBlock);
+  }
 
   async create(agentBlock: AgentBlock, user: User) {
     // await this.usersService.addAgentBlock(user, agentBlock);

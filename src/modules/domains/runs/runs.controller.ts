@@ -61,7 +61,8 @@ export class RunsController {
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'update run by id',
+    description: 'update run by id. with auth. if not exist, 400 error.',
   })
   @Patch(':id')
   async update(
@@ -72,7 +73,8 @@ export class RunsController {
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'delete run by id',
+    description: 'delete run by id. with auth. if not exist, 400 error.',
   })
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {

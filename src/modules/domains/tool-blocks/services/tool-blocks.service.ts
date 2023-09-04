@@ -49,6 +49,7 @@ export class ToolBlocksService {
     const taskBlock: TaskBlock =
       await this.taskBlocksService.findByIdOrException(taskId);
     toolBlock.taskBlock = Promise.resolve(taskBlock);
+    await this.taskBlocksService.addContentToTaskBlock(taskId, toolBlock.id);
     return await this.toolBlockRepository.save(toolBlock);
   }
 
@@ -64,14 +65,25 @@ export class ToolBlocksService {
     return toolBlock;
   }
 
-  async update(id: string, updateToolBlockDto: UpdateToolBlockDto) {
-    await this.findByIdOrException(id);
-    return await this.toolBlockRepository.update(id, updateToolBlockDto);
+  async update(
+    id: string,
+    updateToolBlockDto: UpdateToolBlockDto,
+  ): Promise<ToolBlock> {
+    const toolBlock = await this.findByIdOrException(id);
+    await this.toolBlockRepository.update(id, updateToolBlockDto);
+    return await this.findByIdOrException(id);
   }
 
-  async remove(id: string) {
-    await this.findByIdOrException(id);
-    return await this.toolBlockRepository.delete(id);
+  async remove(id: string): Promise<ToolBlock> {
+    const toolBlock = await this.findByIdOrException(id);
+    await this.toolBlockRepository.delete(id);
+    await this.taskBlocksService.removeContentFromTaskBlock(
+      (
+        await toolBlock.taskBlock
+      ).id,
+      id,
+    );
+    return toolBlock;
   }
 
   async softDelete(id: string) {

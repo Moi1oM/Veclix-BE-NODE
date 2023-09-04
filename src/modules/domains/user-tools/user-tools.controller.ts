@@ -25,7 +25,6 @@ export class UserToolsController {
   constructor(private readonly userToolsService: UserToolsService) {}
 
   @ApiOperation({
-    deprecated: true,
     summary: 'create slack tool with oauth code',
     description:
       'create slack tool with oauth code. it has to be post after get slack oauth code.',

@@ -16,6 +16,24 @@ export class TaskBlocksService {
     private readonly agentBlocksService: AgentBlocksService,
   ) {}
 
+  async addContentToTaskBlock(
+    taskBlockId: string,
+    content: string,
+  ): Promise<TaskBlock> {
+    const taskBlock = await this.findByIdOrException(taskBlockId);
+    taskBlock.contents.push(content);
+    return await this.taskBlockRepository.save(taskBlock);
+  }
+
+  async removeContentFromTaskBlock(
+    taskBlockId: string,
+    content: string,
+  ): Promise<TaskBlock> {
+    const taskBlock = await this.findByIdOrException(taskBlockId);
+    taskBlock.contents = taskBlock.contents.filter((c) => c !== content);
+    return await this.taskBlockRepository.save(taskBlock);
+  }
+
   async findAllWithAgentId(agentId: string): Promise<TaskBlock[]> {
     const taskBlocks = await this.taskBlockRepository.find({
       where: {
@@ -52,6 +70,7 @@ export class TaskBlocksService {
     const agentBlock =
       await this.agentBlocksService.findOneByAgentIdOrException(agentId);
     taskBlock.agentBlock = Promise.resolve(agentBlock);
+    await this.agentBlocksService.addContentToAgentBlock(agentId, taskBlock.id);
     return await this.taskBlockRepository.save(taskBlock);
   }
 
@@ -82,14 +101,23 @@ export class TaskBlocksService {
     return taskBlocksList;
   }
 
-  async update(id: string, updateTaskBlockDto: UpdateTaskBlockDto) {
+  async update(
+    id: string,
+    updateTaskBlockDto: UpdateTaskBlockDto,
+  ): Promise<TaskBlock> {
     await this.findByIdOrException(id);
-    return await this.taskBlockRepository.update(id, updateTaskBlockDto);
+    await this.taskBlockRepository.update(id, updateTaskBlockDto);
+    return await this.findByIdOrException(id);
   }
 
   async remove(id: string) {
-    await this.findByIdOrException(id);
-    return await this.taskBlockRepository.delete(id);
+    const taskBlock = await this.findByIdOrException(id);
+    await this.taskBlockRepository.delete(id);
+    await this.agentBlocksService.removeContentFromAgentBlock(
+      taskBlock.agentBlockId,
+      taskBlock.id,
+    );
+    return taskBlock;
   }
 
   async softRemove(id: string) {
