@@ -4,7 +4,7 @@ import { ReviewsController } from './reviews.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
-import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
+import AgentBlocksModule from '../agent-blocks/agent-blocks.module';
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
   providers: [ReviewsService],
   exports: [ReviewsService],
 })
-export class ReviewsModule {}
+export default class ReviewsModule {}

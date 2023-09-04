@@ -4,6 +4,6 @@ import { PlansController } from './plans.controller';
 
 @Module({
   controllers: [PlansController],
-  providers: [PlansService]
+  providers: [PlansService],
 })
-export class PlansModule {}
+export default class PlansModule {}

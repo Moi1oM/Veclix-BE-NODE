@@ -3,8 +3,8 @@ import { ToolBlocksService } from './services/tool-blocks.service';
 import { ToolBlocksController } from './tool-blocks.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
-import { TaskBlocksModule } from '../task-blocks/task-blocks.module';
 import { ToolBlock } from './entities/tool-block.entity';
+import TaskBlocksModule from '../task-blocks/task-blocks.module';
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import { ToolBlock } from './entities/tool-block.entity';
   providers: [ToolBlocksService],
   exports: [ToolBlocksService],
 })
-export class ToolBlocksModule {}
+export default class ToolBlocksModule {}

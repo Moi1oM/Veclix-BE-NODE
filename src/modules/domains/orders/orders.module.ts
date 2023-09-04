@@ -4,8 +4,8 @@ import { OrdersController } from './orders.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
-import { UsersModule } from '../users/users.module';
-import { OrderDetailsModule } from '../order-details/order-details.module';
+import OrderDetailsModule from '../order-details/order-details.module';
+import UsersModule from '../users/users.module';
 
 @Module({
   imports: [
@@ -18,4 +18,4 @@ import { OrderDetailsModule } from '../order-details/order-details.module';
   providers: [OrdersService],
   exports: [OrdersService],
 })
-export class OrdersModule {}
+export default class OrdersModule {}

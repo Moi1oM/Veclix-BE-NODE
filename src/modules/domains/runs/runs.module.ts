@@ -4,8 +4,8 @@ import { RunsService } from './runs.service';
 import { RunsController } from './runs.controller';
 import { Run } from './entities/run.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
-import { CyclesModule } from '../cycles/cycles.module';
-import { TaskBlocksModule } from '../task-blocks/task-blocks.module';
+import CyclesModule from '../cycles/cycles.module';
+import TaskBlocksModule from '../task-blocks/task-blocks.module';
 
 @Module({
   imports: [
@@ -18,4 +18,4 @@ import { TaskBlocksModule } from '../task-blocks/task-blocks.module';
   providers: [RunsService],
   exports: [RunsService],
 })
-export class RunsModule {}
+export default class RunsModule {}

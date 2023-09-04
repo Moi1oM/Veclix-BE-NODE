@@ -11,4 +11,4 @@ import { AuthModule } from 'src/modules/functions/auth/auth.module';
   providers: [ToolsService],
   exports: [ToolsService],
 })
-export class ToolsModule {}
+export default class ToolsModule {}

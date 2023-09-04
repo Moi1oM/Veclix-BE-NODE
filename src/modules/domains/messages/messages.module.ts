@@ -4,7 +4,7 @@ import { MessagesController } from './messages.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
-import { CyclesModule } from '../cycles/cycles.module';
+import CyclesModule from '../cycles/cycles.module';
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import { CyclesModule } from '../cycles/cycles.module';
   providers: [MessagesService],
   exports: [MessagesService],
 })
-export class MessagesModule {}
+export default class MessagesModule {}

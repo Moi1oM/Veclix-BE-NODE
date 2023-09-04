@@ -11,4 +11,4 @@ import { AuthModule } from 'src/modules/functions/auth/auth.module';
   providers: [UserScrapsService],
   exports: [UserScrapsService],
 })
-export class UserScrapsModule {}
+export default class UserScrapsModule {}

@@ -4,6 +4,6 @@ import { VoiceToneController } from './voice-tone.controller';
 
 @Module({
   controllers: [VoiceToneController],
-  providers: [VoiceToneService]
+  providers: [VoiceToneService],
 })
-export class VoiceToneModule {}
+export default class VoiceToneModule {}

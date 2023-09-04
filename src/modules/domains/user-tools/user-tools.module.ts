@@ -10,4 +10,4 @@ import { AuthModule } from 'src/modules/functions/auth/auth.module';
   controllers: [UserToolsController],
   providers: [UserToolsService],
 })
-export class UserToolsModule {}
+export default class UserToolsModule {}

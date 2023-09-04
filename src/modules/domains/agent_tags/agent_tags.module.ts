@@ -4,8 +4,8 @@ import { AgentTagsController } from './agent_tags.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AgentTag } from './entities/agent_tag.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
-import { TagsModule } from '../tags/tags.module';
-import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
+import TagsModule from '../tags/tags.module';
+import AgentBlocksModule from '../agent-blocks/agent-blocks.module';
 
 @Module({
   imports: [
@@ -17,4 +17,4 @@ import { AgentBlocksModule } from '../agent-blocks/agent-blocks.module';
   controllers: [AgentTagsController],
   providers: [AgentTagsService],
 })
-export class AgentTagsModule {}
+export default class AgentTagsModule {}

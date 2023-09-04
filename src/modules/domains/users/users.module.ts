@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { AuthModule } from 'src/modules/functions/auth/auth.module';
 import { UsersRelatedAgentBlockService } from './services/usersAgentBlock.service';
-import { UserScrapsModule } from '../user-scraps/user-scraps.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), forwardRef(() => AuthModule)],
@@ -13,4 +12,4 @@ import { UserScrapsModule } from '../user-scraps/user-scraps.module';
   providers: [UsersService, Logger, UsersRelatedAgentBlockService],
   exports: [UsersService, UsersRelatedAgentBlockService],
 })
-export class UsersModule {}
+export default class UsersModule {}

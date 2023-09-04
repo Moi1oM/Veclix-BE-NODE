@@ -11,4 +11,4 @@ import { AuthModule } from 'src/modules/functions/auth/auth.module';
   providers: [TagsService],
   exports: [TagsService],
 })
-export class TagsModule {}
+export default class TagsModule {}

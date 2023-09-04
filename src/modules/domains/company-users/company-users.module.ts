@@ -11,4 +11,4 @@ import { AuthModule } from 'src/modules/functions/auth/auth.module';
   providers: [CompanyUsersService],
   exports: [CompanyUsersService],
 })
-export class CompanyUsersModule {}
+export default class CompanyUsersModule {}
