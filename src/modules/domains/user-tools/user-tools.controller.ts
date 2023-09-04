@@ -39,7 +39,6 @@ export class UserToolsController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'create notion tool with oauth code',
     description:
       'create notion tool with oauth code. It has to be post after get notion oauth code.',

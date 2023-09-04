@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { CycleStatus, CycleTimeZones, CycleType } from '../entities/cycle.enum';
 
 export class CreateCycleDto {
   @ApiProperty({
@@ -20,7 +21,7 @@ export class CreateCycleDto {
   })
   @IsNotEmpty()
   @IsString()
-  status: string;
+  status: CycleStatus;
 
   @ApiProperty({
     description: 'The type of the Cycle',
@@ -30,7 +31,7 @@ export class CreateCycleDto {
   })
   @IsNotEmpty()
   @IsString()
-  type: string;
+  type: CycleType;
 
   @ApiProperty({
     description: 'The parent_cycle_id of the Cycle',
@@ -79,5 +80,5 @@ export class CreateCycleDto {
   })
   @IsNotEmpty()
   @IsString()
-  timezone: string;
+  timezone: CycleTimeZones;
 }

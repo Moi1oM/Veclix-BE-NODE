@@ -1,20 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCycleDto } from './create-cycle.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { CycleStatus, CycleTimeZones, CycleType } from '../entities/cycle.enum';
 
-export class UpdateCycleDto {
-  @ApiPropertyOptional({
-    description: 'The run_at of the Cycle',
-    type: Date,
-    required: true,
-    example: '2021-08-01T00:00:00.000Z',
-  })
-  @IsDate()
-  @IsOptional()
-  run_at: Date;
-
+export class CycleQuery {
   @ApiPropertyOptional({
     description: 'The status of the Cycle',
     type: String,
@@ -64,15 +52,6 @@ export class UpdateCycleDto {
   @IsOptional()
   @IsUUID()
   current_task_id: string;
-
-  @ApiPropertyOptional({
-    description: 'The memo of the Cycle',
-    type: String,
-    required: false,
-    example: 'memo',
-  })
-  @IsString()
-  memo: string;
 
   @ApiPropertyOptional({
     description: 'The timezone of the Cycle',

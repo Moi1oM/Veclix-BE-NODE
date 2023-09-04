@@ -17,8 +17,8 @@ import { Message } from '../../messages/entities/message.entity';
 @Entity()
 export class Cycle {
   // BASIC COLUMNS
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

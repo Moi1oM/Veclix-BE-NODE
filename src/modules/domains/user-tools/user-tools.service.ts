@@ -48,7 +48,7 @@ export class UserToolsService {
       redirect_uri: SLACK_OAUTH_REDIRECT_URI,
       grant_type: 'authorization_code',
     };
-
+    // console.log(authData);
     try {
       const response = await axios.post<SlackResponse>(
         url,
@@ -56,7 +56,7 @@ export class UserToolsService {
         { headers },
       );
       const responseJson = response.data;
-
+      // console.log(responseJson);
       if (!responseJson.ok) {
         throw new Error(responseJson.error);
       }

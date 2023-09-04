@@ -7,6 +7,7 @@ export enum CycleType {
 export enum CycleStatus {
   waiting = 'waiting',
   running = 'running',
+  queued = 'queued',
   done = 'done',
 }
 
