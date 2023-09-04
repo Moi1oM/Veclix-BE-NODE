@@ -23,6 +23,20 @@ export class EmpAgentsService {
     private readonly usersServce: UsersService,
   ) {}
 
+  async findByUserIdOrException(userId: number): Promise<EmpAgent[]> {
+    const empAgent = await this.empAgentRepository.find({
+      where: { ownerId: userId },
+      relations: ['cycles'],
+    });
+    if (!empAgent) {
+      throw new HttpException(
+        `empAgent with userId ${userId} not found`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return empAgent;
+  }
+
   async getToolsListWithAgentId(agentId: string): Promise<string[]> {
     const toolNameSet = new Set<string>();
     try {

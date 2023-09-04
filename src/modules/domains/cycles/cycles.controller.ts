@@ -16,6 +16,8 @@ import { UpdateCycleDto } from './dto/update-cycle.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
 import { CycleQuery } from './dto/cycle-query.dto';
+import { CurrentUser } from 'src/commons/common/decorators/user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @ApiTags('cycles')
 @ApiBearerAuth('access-token')
@@ -25,7 +27,6 @@ export class CyclesController {
   constructor(private readonly cyclesService: CyclesService) {}
 
   @ApiOperation({
-    deprecated: true,
     summary: 'creating cycle',
     description: 'creating cycle. with auth & post body.',
   })
@@ -41,7 +42,15 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'get cycle by agentId',
+    description: 'get cycle by agentId. with auth.',
+  })
+  @Get('@me')
+  async findMyCycle(@CurrentUser() user: User) {
+    return await this.cyclesService.findMyCycle(user.id);
+  }
+
+  @ApiOperation({
     summary: 'get cycle and messages related with agentId',
     description: 'get cycle and messages. with auth.',
   })
@@ -51,7 +60,6 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'get all cycles and messages related with cycleId',
     description: 'get all cycles and messages. with auth.',
   })
@@ -61,7 +69,6 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'get all cycles',
     description: 'get all cycles. with auth.',
   })
@@ -71,7 +78,6 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'get all scheduled cycles',
     description: 'get all scheduled cycles. with auth.',
   })
@@ -81,7 +87,6 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'get cycle by id',
     description: 'get cycle by id. 400 error if not found.',
   })
@@ -91,7 +96,6 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'get cycle by query',
     description: 'get cycle by query. data will provide with query.',
   })
@@ -101,7 +105,6 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'update cycle by id',
     description: 'update cycle by id. 400 error if not found.',
   })
@@ -114,7 +117,8 @@ export class CyclesController {
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'delete cycle by id',
+    description: 'delete cycle by id. 400 error if not found.',
   })
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {

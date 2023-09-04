@@ -6,54 +6,76 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { RunsService } from './runs.service';
 import { CreateRunDto } from './dto/create-run.dto';
 import { UpdateRunDto } from './dto/update-run.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
+import { CurrentUser } from 'src/commons/common/decorators/user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @ApiTags('runs')
+@ApiBearerAuth('access-token')
+@UseGuards(BasicAuthGuard)
 @Controller('runs')
 export class RunsController {
   constructor(private readonly runsService: RunsService) {}
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'creating run',
+    description: 'creating run. with auth & post body.',
   })
   @Post()
-  create(@Body() createRunDto: CreateRunDto) {
-    return this.runsService.create(createRunDto);
+  async create(@Body() createRunDto: CreateRunDto) {
+    return await this.runsService.create(createRunDto);
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'get run by agentId',
+    description: 'get run by agentId. with auth.',
   })
-  @Get()
-  findAll() {
-    return this.runsService.findAll();
+  @Get('@me')
+  async findMyRun(@CurrentUser() user: User) {
+    return await this.runsService.findMyRun(user.id);
   }
 
   @ApiOperation({
-    deprecated: true,
+    summary: 'get all runs',
+    description: 'get all runs. with auth.',
+  })
+  @Get('all')
+  async findAll() {
+    return await this.runsService.findAll();
+  }
+
+  @ApiOperation({
+    summary: 'get run by id',
+    description: 'get run by id. with auth.',
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.runsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.runsService.findOneByIdOrException(id);
   }
 
   @ApiOperation({
     deprecated: true,
   })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRunDto: UpdateRunDto) {
-    return this.runsService.update(+id, updateRunDto);
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateRunDto: UpdateRunDto,
+  ) {
+    return await this.runsService.update(id, updateRunDto);
   }
 
   @ApiOperation({
     deprecated: true,
   })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.runsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.runsService.remove(id);
   }
 }

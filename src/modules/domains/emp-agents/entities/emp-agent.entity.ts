@@ -5,12 +5,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { AgentBlock } from '../../agent-blocks/entities/agent-block.entity';
 import { EmpAgentLanguage, EmpAgentStatus } from './emp-agent.enum';
+import { Cycle } from '../../cycles/entities/cycle.entity';
 
 @Entity()
 export class EmpAgent {
@@ -67,4 +69,7 @@ export class EmpAgent {
   @ManyToOne(() => AgentBlock, (agentBlock) => agentBlock.empAgents)
   @JoinColumn({ name: 'agentClassId' })
   agentBlock: AgentBlock;
+
+  @OneToMany(() => Cycle, (cycle) => cycle.agentBlock)
+  cycles: Cycle[];
 }

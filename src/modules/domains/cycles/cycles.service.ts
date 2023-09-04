@@ -22,6 +22,19 @@ export class CyclesService {
     private readonly messagesService: MessagesService,
   ) {}
 
+  async findMyCycle(userId: number) {
+    // find agentBlock with userId
+    const empAgents = await this.empAgentsService.findByUserIdOrException(
+      userId,
+    );
+    const cycles: Cycle[] = [];
+    for (const empAgent of empAgents) {
+      const newCycles = empAgent.cycles;
+      cycles.push(...newCycles);
+    }
+    return cycles;
+  }
+
   async findCurrentTaskId(agentBlockId: string): Promise<string> {
     const empAgentBlock = await this.empAgentsService.findOneByIdOrException(
       agentBlockId,

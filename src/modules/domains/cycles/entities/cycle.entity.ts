@@ -14,6 +14,7 @@ import { CycleStatus, CycleTimeZones, CycleType } from './cycle.enum';
 import { TaskBlock } from '../../task-blocks/entities/task-block.entity';
 import { Run } from '../../runs/entities/run.entity';
 import { Message } from '../../messages/entities/message.entity';
+import { EmpAgent } from '../../emp-agents/entities/emp-agent.entity';
 @Entity()
 export class Cycle {
   // BASIC COLUMNS
@@ -59,9 +60,11 @@ export class Cycle {
   timezone: CycleTimeZones;
 
   // RELATIONS
-  @ManyToOne(() => AgentBlock, (agentBlock) => agentBlock.cycles)
+  @ManyToOne(() => EmpAgent, (empAgent) => empAgent.cycles, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'agent_block_id' })
-  agentBlock: Promise<AgentBlock>;
+  agentBlock: Promise<EmpAgent>;
 
   @ManyToOne(() => TaskBlock, (taskBlock) => taskBlock.cycles)
   @JoinColumn({ name: 'current_task_id' })

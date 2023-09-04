@@ -77,9 +77,6 @@ export class AgentBlock {
   @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.agent)
   orderDetails: OrderDetails[];
 
-  @OneToMany(() => Cycle, (cycle) => cycle.agentBlock)
-  cycles: Cycle[];
-
   @OneToMany(() => EmpAgent, (empAgent) => empAgent.agentBlock)
   empAgents: EmpAgent[];
 }
