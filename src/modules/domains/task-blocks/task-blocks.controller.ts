@@ -22,7 +22,7 @@ import { TaskBlockQuery } from './dto/dquery-task-block.dto';
 
 @ApiTags('task-blocks')
 @UseGuards(BasicAuthGuard)
-@Controller('task-blocks')
+@Controller('v1/task-blocks')
 export class TaskBlocksController {
   private readonly logger = new Logger('TaskBlock');
   constructor(private readonly taskBlocksService: TaskBlocksService) {}

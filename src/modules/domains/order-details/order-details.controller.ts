@@ -19,7 +19,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('order-details')
 @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
 @UseGuards(BasicAuthGuard)
-@Controller('order-details')
+@Controller('v1/order-details')
 export class OrderDetailsController {
   constructor(private readonly orderDetailsService: OrderDetailsService) {}
 

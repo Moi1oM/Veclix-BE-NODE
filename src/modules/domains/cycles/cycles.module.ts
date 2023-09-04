@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CyclesService } from './cycles.service';
 import { CyclesController } from './cycles.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,7 +16,7 @@ import { MessagesModule } from '../messages/messages.module';
     AgentBlocksModule,
     TaskBlocksModule,
     EmpAgentsModule,
-    MessagesModule,
+    forwardRef(() => MessagesModule),
   ],
   controllers: [CyclesController],
   providers: [CyclesService],

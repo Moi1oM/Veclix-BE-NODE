@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { VoiceToneService } from './voice-tone.service';
 import { CreateVoiceToneDto } from './dto/create-voice-tone.dto';
 import { UpdateVoiceToneDto } from './dto/update-voice-tone.dto';
 
-@Controller('voice-tone')
+@Controller('v1/voice-tone')
 export class VoiceToneController {
   constructor(private readonly voiceToneService: VoiceToneService) {}
 
@@ -23,7 +31,10 @@ export class VoiceToneController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVoiceToneDto: UpdateVoiceToneDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateVoiceToneDto: UpdateVoiceToneDto,
+  ) {
     return this.voiceToneService.update(+id, updateVoiceToneDto);
   }
 

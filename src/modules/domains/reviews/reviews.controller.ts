@@ -20,7 +20,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('reviews')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('reviews')
+@Controller('v1/reviews')
 export class ReviewsController {
   private readonly logger = new Logger(ReviewsController.name);
   constructor(private readonly reviewsService: ReviewsService) {}

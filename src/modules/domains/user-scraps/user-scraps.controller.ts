@@ -21,7 +21,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('user-scraps')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('user-scraps')
+@Controller('v1/user-scraps')
 export class UserScrapsController {
   private readonly logger = new Logger(UserScrapsController.name);
   constructor(private readonly userScrapsService: UserScrapsService) {}

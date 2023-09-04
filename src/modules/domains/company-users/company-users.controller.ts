@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CompanyUsersService } from './company-users.service';
 import { CreateCompanyUserDto } from './dto/create-company-user.dto';
 import { UpdateCompanyUserDto } from './dto/update-company-user.dto';
 
-@Controller('company-users')
+@Controller('v1/company-users')
 export class CompanyUsersController {
   constructor(private readonly companyUsersService: CompanyUsersService) {}
 
@@ -23,7 +31,10 @@ export class CompanyUsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyUserDto: UpdateCompanyUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCompanyUserDto: UpdateCompanyUserDto,
+  ) {
     return this.companyUsersService.update(+id, updateCompanyUserDto);
   }
 

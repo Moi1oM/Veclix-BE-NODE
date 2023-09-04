@@ -13,7 +13,7 @@ import { UpdateToolDto } from './dto/update-tool.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('tools')
-@Controller('tools')
+@Controller('v1/tools')
 export class ToolsController {
   constructor(private readonly toolsService: ToolsService) {}
 

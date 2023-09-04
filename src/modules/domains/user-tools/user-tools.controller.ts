@@ -20,7 +20,7 @@ import { OauthCodeDto } from './dto/oauth-code.dto';
 @ApiTags('user-tools')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('user-tools')
+@Controller('v1/user-tools')
 export class UserToolsController {
   constructor(private readonly userToolsService: UserToolsService) {}
 

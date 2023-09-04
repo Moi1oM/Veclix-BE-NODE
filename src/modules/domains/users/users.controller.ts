@@ -17,7 +17,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserQueryDto } from './dto/dquery-user.dto';
 import { BasicAuthGuard } from '../../functions/auth/guard/basic-auth.guard';
 @ApiTags('users')
-@Controller('users')
+@Controller('v1/users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,

@@ -8,6 +8,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { MessageRole } from '../entities/message.enum';
 
 export class UpdateMessageDto {
   @ApiPropertyOptional({
@@ -17,7 +18,7 @@ export class UpdateMessageDto {
   })
   @IsOptional()
   @IsString()
-  role: string;
+  role: MessageRole;
 
   @ApiPropertyOptional({
     description: 'the message content',

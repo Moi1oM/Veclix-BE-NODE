@@ -18,7 +18,7 @@ import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guar
 @ApiTags('tags')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('tags')
+@Controller('v1/tags')
 export class TagsController {
   private readonly logger: Logger = new Logger('Tags');
   constructor(private readonly tagsService: TagsService) {}

@@ -18,7 +18,7 @@ import { AgentTagDQuery } from './dto/dquery-agent-tag.dto';
 @ApiTags('agent-tags')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('agent-tags')
+@Controller('v1/agent-tags')
 export class AgentTagsController {
   constructor(private readonly agentTagsService: AgentTagsService) {}
 

@@ -22,7 +22,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('cycles')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('cycles')
+@Controller('v1/cycles')
 export class CyclesController {
   constructor(private readonly cyclesService: CyclesService) {}
 

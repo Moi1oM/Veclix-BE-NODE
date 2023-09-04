@@ -19,7 +19,7 @@ import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guar
 @ApiTags('emp-agents')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('emp-agents')
+@Controller('v1/emp-agents')
 export class EmpAgentsController {
   constructor(private readonly empAgentsService: EmpAgentsService) {}
 

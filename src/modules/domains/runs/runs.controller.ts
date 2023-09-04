@@ -20,7 +20,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('runs')
 @ApiBearerAuth('access-token')
 @UseGuards(BasicAuthGuard)
-@Controller('runs')
+@Controller('v1/runs')
 export class RunsController {
   constructor(private readonly runsService: RunsService) {}
 

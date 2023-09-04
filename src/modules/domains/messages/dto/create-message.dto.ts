@@ -6,6 +6,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { MessageRole } from '../entities/message.enum';
 
 export class CreateMessageDto {
   @ApiProperty({
@@ -24,7 +25,7 @@ export class CreateMessageDto {
   })
   @IsNotEmpty()
   @IsString()
-  role: string;
+  role: MessageRole;
 
   @ApiProperty({
     description: 'the message content',

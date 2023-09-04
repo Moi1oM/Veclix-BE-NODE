@@ -25,7 +25,7 @@ import { TaskBlocksController } from '../task-blocks/task-blocks.controller';
 @ApiTags('agent-blocks')
 @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
 @UseGuards(BasicAuthGuard)
-@Controller('agent-blocks')
+@Controller('v1/agent-blocks')
 export class AgentBlocksController {
   private readonly logger = new Logger('AgentBlock');
 

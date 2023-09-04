@@ -19,7 +19,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('payments')
 @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
 @UseGuards(BasicAuthGuard)
-@Controller('payments')
+@Controller('v1/payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 

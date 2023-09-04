@@ -21,7 +21,7 @@ import { User } from '../users/entities/user.entity';
 @ApiTags('tool-blocks')
 @ApiBearerAuth('access-token을 통한 인증이 필요합니다.')
 @UseGuards(BasicAuthGuard)
-@Controller('tool-blocks')
+@Controller('v1/tool-blocks')
 export class ToolBlocksController {
   private readonly logger = new Logger('ToolBlock');
   constructor(private readonly toolBlocksService: ToolBlocksService) {}
