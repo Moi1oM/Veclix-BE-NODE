@@ -18,7 +18,6 @@ export class CompanyUsersController {
   constructor(private readonly companyUsersService: CompanyUsersService) {}
 
   @ApiOperation({
-    deprecated: true,
     summary: 'Create a new company user',
     description: 'Create a new company user',
   })
@@ -28,7 +27,6 @@ export class CompanyUsersController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'Get all company users',
     description:
       'Get all company users. This is a deprecated endpoint. It has not to be used.',
@@ -48,7 +46,6 @@ export class CompanyUsersController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'Update company user',
     description: 'Update company user by id',
   })
@@ -61,7 +58,6 @@ export class CompanyUsersController {
   }
 
   @ApiOperation({
-    deprecated: true,
     summary: 'Delete company user',
     description: 'Delete company user by id',
   })

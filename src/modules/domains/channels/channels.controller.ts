@@ -26,7 +26,6 @@ export class ChannelsController {
   @ApiOperation({
     summary: 'Create channel',
     description: 'Create channel',
-    deprecated: true,
   })
   @Post()
   async create(@Body() createChannelDto: CreateChannelDto) {
@@ -36,7 +35,6 @@ export class ChannelsController {
   @ApiOperation({
     summary: 'Find my channels',
     description: 'Find my channels. user id is from access token',
-    deprecated: true,
   })
   @Get('@me')
   async findMyChannels(@CurrentUser() user: CompanyUser) {
@@ -45,7 +43,6 @@ export class ChannelsController {
   @ApiOperation({
     summary: 'Find all channels',
     description: 'Find all channels',
-    deprecated: true,
   })
   @Get('all')
   async findAll() {
@@ -55,7 +52,6 @@ export class ChannelsController {
   @ApiOperation({
     summary: 'Find one channel',
     description: 'Find one channel. It will return 400 if channel not found',
-    deprecated: true,
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
@@ -65,7 +61,6 @@ export class ChannelsController {
   @ApiOperation({
     summary: 'Update channel',
     description: 'Update channel. It will return 400 if channel not found',
-    deprecated: true,
   })
   @Patch(':id')
   async update(
@@ -78,7 +73,6 @@ export class ChannelsController {
   @ApiOperation({
     summary: 'Remove channel',
     description: 'Remove channel. It will return 400 if channel not found',
-    deprecated: true,
   })
   @Delete(':id')
   async remove(@Param('id') id: string) {

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ChannelsService } from './channels.service';
 import { ChannelsController } from './channels.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,10 +11,11 @@ import CompanyUsersModule from '../company-users/company-users.module';
   imports: [
     TypeOrmModule.forFeature([Channel]),
     AuthModule,
-    VoiceToneModule,
+    forwardRef(() => VoiceToneModule),
     CompanyUsersModule,
   ],
   controllers: [ChannelsController],
   providers: [ChannelsService],
+  exports: [ChannelsService],
 })
 export default class ChannelsModule {}

@@ -32,11 +32,14 @@ export class VoiceTone {
   @Column({ type: 'text', nullable: true })
   type: string;
 
-  @Column({ type: 'text', nullable: true })
-  channelId: string;
+  @Column({ type: 'int4', nullable: true })
+  channelId: number;
   // RELATIONS
 
-  @OneToOne(() => Channel, (channel) => channel.voiceTone)
+  @OneToOne(() => Channel, (channel) => channel.voiceTone, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   @JoinColumn({ name: 'channelId' })
   channel: Channel;
 }

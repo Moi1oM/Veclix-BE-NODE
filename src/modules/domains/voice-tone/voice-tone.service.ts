@@ -1,23 +1,39 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { CreateVoiceToneDto } from './dto/create-voice-tone.dto';
 import { UpdateVoiceToneDto } from './dto/update-voice-tone.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VoiceTone } from './entities/voice-tone.entity';
 import { Repository } from 'typeorm';
+import { ChannelsService } from '../channels/channels.service';
 
 @Injectable()
 export class VoiceToneService {
   constructor(
     @InjectRepository(VoiceTone)
     private readonly voiceToneRepository: Repository<VoiceTone>,
+    @Inject(forwardRef(() => ChannelsService))
+    private readonly channelService: ChannelsService,
   ) {}
 
-  async create(createVoiceToneDto: CreateVoiceToneDto) {
-    return 'This action adds a new voiceTone';
+  async create(createVoiceToneDto: CreateVoiceToneDto): Promise<VoiceTone> {
+    const channel = await this.channelService.findOneByIdOrException(
+      createVoiceToneDto.channelId,
+    );
+    const data = {
+      ...createVoiceToneDto,
+      channel: channel,
+    };
+    return await this.voiceToneRepository.save(data);
   }
 
-  async findAll() {
-    return `This action returns all voiceTone`;
+  async findAll(): Promise<VoiceTone[]> {
+    return await this.voiceToneRepository.find();
   }
 
   async findOneByIdOrException(id: number): Promise<VoiceTone> {
@@ -33,11 +49,18 @@ export class VoiceToneService {
     return voiceTone;
   }
 
-  update(id: number, updateVoiceToneDto: UpdateVoiceToneDto) {
-    return `This action updates a #${id} voiceTone`;
+  async update(
+    id: number,
+    updateVoiceToneDto: UpdateVoiceToneDto,
+  ): Promise<VoiceTone> {
+    await this.findOneByIdOrException(id);
+    await this.voiceToneRepository.update(id, updateVoiceToneDto);
+    return await this.findOneByIdOrException(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} voiceTone`;
+  async remove(id: number): Promise<VoiceTone> {
+    const voiceTone = await this.findOneByIdOrException(id);
+    await this.voiceToneRepository.delete(id);
+    return voiceTone;
   }
 }

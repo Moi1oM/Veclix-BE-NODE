@@ -6,40 +6,67 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { VoiceToneService } from './voice-tone.service';
 import { CreateVoiceToneDto } from './dto/create-voice-tone.dto';
 import { UpdateVoiceToneDto } from './dto/update-voice-tone.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BasicAuthGuard } from '../../functions/auth/guard/basic-auth.guard';
+import { raw } from 'express';
 
+@ApiTags('Voice Tone')
+@ApiBearerAuth('access-token')
+@UseGuards(BasicAuthGuard)
 @Controller('v1/voice-tone')
 export class VoiceToneController {
   constructor(private readonly voiceToneService: VoiceToneService) {}
 
+  @ApiOperation({
+    summary: 'Create voice tone',
+    description: 'Create voice tone',
+  })
   @Post()
-  create(@Body() createVoiceToneDto: CreateVoiceToneDto) {
-    return this.voiceToneService.create(createVoiceToneDto);
+  async create(@Body() createVoiceToneDto: CreateVoiceToneDto) {
+    return await this.voiceToneService.create(createVoiceToneDto);
   }
 
-  @Get()
-  findAll() {
-    return this.voiceToneService.findAll();
+  @ApiOperation({
+    summary: 'Get all voice tones',
+    description: 'Get all voice tones',
+  })
+  @Get('all')
+  async findAll() {
+    return await this.voiceToneService.findAll();
   }
 
+  @ApiOperation({
+    summary: 'Get voice tone',
+    description: 'Get voice tone by id',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.voiceToneService.findOneByIdOrException(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.voiceToneService.findOneByIdOrException(+id);
   }
 
+  @ApiOperation({
+    summary: 'Update voice tone',
+    description: 'Update voice tone by id',
+  })
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateVoiceToneDto: UpdateVoiceToneDto,
   ) {
-    return this.voiceToneService.update(+id, updateVoiceToneDto);
+    return await this.voiceToneService.update(+id, updateVoiceToneDto);
   }
 
+  @ApiOperation({
+    summary: 'Delete voice tone',
+    description: 'Delete voice tone by id',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.voiceToneService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.voiceToneService.remove(+id);
   }
 }

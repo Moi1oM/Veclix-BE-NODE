@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateUserToolDto } from './dto/create-user-tool.dto';
 import { UpdateUserToolDto } from './dto/update-user-tool.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,7 +6,7 @@ import { UserTool } from './entities/user-tool.entity';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 import { User } from '../users/entities/user.entity';
-interface SlackResponse {
+export interface SlackResponse {
   ok: boolean;
   error?: string;
   [key: string]: any;
@@ -16,13 +16,14 @@ export interface UserToolResponse {
   userTool: UserTool;
   oauthResposne: SlackResponse | NotionResponse;
 }
-interface NotionResponse {
+export interface NotionResponse {
   error?: string;
   [key: string]: any;
 }
 
 @Injectable()
 export class UserToolsService {
+  private readonly logger = new Logger(UserToolsService.name);
   constructor(
     @InjectRepository(UserTool)
     private readonly userToolRepository: Repository<UserTool>,
@@ -31,7 +32,7 @@ export class UserToolsService {
   async makeSlackOAuthUserTools(
     user: User,
     authCode: string,
-  ): Promise<UserToolResponse> {
+  ): Promise<SlackResponse> {
     const url = 'https://slack.com/api/oauth.v2.access';
 
     const SLACK_OAUTH_CLIENT_ID = process.env.SLACK_OAUTH_CLIENT_ID;
@@ -56,13 +57,13 @@ export class UserToolsService {
         { headers },
       );
       const responseJson = response.data;
-      // console.log(responseJson);
       if (!responseJson.ok) {
+        this.logger.error(responseJson);
         throw new Error(responseJson.error);
       }
 
       const userTool = await this.saveTokenToDb(responseJson, user, 'slack');
-      return { userTool, oauthResposne: responseJson };
+      return responseJson;
     } catch (error) {
       throw new HttpException(`${error}`, HttpStatus.BAD_REQUEST);
     }
@@ -123,7 +124,7 @@ export class UserToolsService {
   async makeNotionOAuthUserTools(
     user: User,
     authCode: string,
-  ): Promise<UserToolResponse> {
+  ): Promise<NotionResponse> {
     try {
       const baseUrl = 'https://api.notion.com/v1/oauth/token';
       const notionKey = process.env.NOTION_OAUTH_AUTH_KEY;
@@ -156,7 +157,7 @@ export class UserToolsService {
         user,
         'notion',
       );
-      return { userTool, oauthResposne: notionAccessJson };
+      return notionAccessJson;
     } catch (error) {
       console.error(error);
       throw new HttpException(`${error}`, HttpStatus.BAD_REQUEST);

@@ -8,7 +8,12 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { UserToolResponse, UserToolsService } from './user-tools.service';
+import {
+  NotionResponse,
+  SlackResponse,
+  UserToolResponse,
+  UserToolsService,
+} from './user-tools.service';
 import { CreateUserToolDto } from './dto/create-user-tool.dto';
 import { UpdateUserToolDto } from './dto/update-user-tool.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -33,7 +38,7 @@ export class UserToolsController {
   async createSlackTool(
     @Body() code: OauthCodeDto,
     @CurrentUser() user: User,
-  ): Promise<UserToolResponse> {
+  ): Promise<SlackResponse> {
     return await this.userToolsService.makeSlackOAuthUserTools(user, code.code);
   }
 
@@ -46,7 +51,7 @@ export class UserToolsController {
   async createNotionTool(
     @Body() code: OauthCodeDto,
     @CurrentUser() user: User,
-  ): Promise<UserToolResponse> {
+  ): Promise<NotionResponse> {
     return await this.userToolsService.makeNotionOAuthUserTools(
       user,
       code.code,
