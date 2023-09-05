@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import axios from 'axios';
 import { User } from 'src/modules/domains/users/entities/user.entity';
 import { UsersService } from './../../domains/users/services/users.service';
@@ -11,6 +11,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly companyUsersService: CompanyUsersService,
   ) {}
+  private readonly logger = new Logger(AuthService.name);
 
   async validateCompany(token: string, provider: string): Promise<CompanyUser> {
     let email: string;
@@ -31,6 +32,7 @@ export class AuthService {
     let email: string;
     // email = await this.getEmailFromProvider(provider, token);
     try {
+      this.logger.log(`provider: ${provider}, token: ${token}`);
       email = await this.getEmailFromProvider(provider, token);
     } catch (error) {
       throw new UnauthorizedException(
@@ -76,6 +78,7 @@ export class AuthService {
       },
     );
     if (response.status !== 200) {
+      this.logger.error(response.data);
       return null;
     }
     return response.data.email;
@@ -88,6 +91,7 @@ export class AuthService {
       headers: headers,
     });
     if (response.status !== 200) {
+      this.logger.error(response.data);
       return null;
     }
     return response.data.email;
