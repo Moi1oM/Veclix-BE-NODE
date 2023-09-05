@@ -110,6 +110,7 @@ export class CyclesService {
       const parentCycle = await this.findCycleByIdOrException(
         createCycleDto.parent_cycle_id,
       );
+      // add content to parentCycle
       if (parentCycle) {
         data['parentCycle'] = parentCycle;
       }
@@ -123,7 +124,15 @@ export class CyclesService {
         data['agentBlock'] = agentBlock;
       }
     }
-    return await this.cycleRepository.save(data);
+    const cycle = await this.cycleRepository.save(data);
+    // add content to agentBlock
+    if (createCycleDto.agent_block_id) {
+      await this.agentBlocksService.addContentToAgentBlock(
+        createCycleDto.agent_block_id,
+        cycle.id,
+      );
+    }
+    return cycle;
   }
 
   async findAll(): Promise<Cycle[]> {
@@ -152,6 +161,24 @@ export class CyclesService {
   async remove(id: string): Promise<Cycle> {
     const cycle = await this.findCycleByIdOrException(id);
     await this.cycleRepository.delete(id);
+    const parentCycle = await cycle.parentCycle;
+    if (parentCycle) {
+      await this.removeSubIdInContents(parentCycle.id, id);
+    }
     return cycle;
+  }
+
+  async addSubIdInContents(id: string, subId: string): Promise<Cycle> {
+    const cycle = await this.findCycleByIdOrException(id);
+    const contents = cycle.contents;
+    contents.push(subId);
+    return await this.cycleRepository.save(cycle);
+  }
+
+  async removeSubIdInContents(id: string, subId: string): Promise<Cycle> {
+    const cycle = await this.findCycleByIdOrException(id);
+    const contents = cycle.contents;
+    cycle.contents = contents.filter((c) => c !== subId);
+    return await this.cycleRepository.save(cycle);
   }
 }

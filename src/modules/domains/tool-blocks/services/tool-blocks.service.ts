@@ -49,8 +49,12 @@ export class ToolBlocksService {
     const taskBlock: TaskBlock =
       await this.taskBlocksService.findByIdOrException(taskId);
     toolBlock.taskBlock = Promise.resolve(taskBlock);
-    await this.taskBlocksService.addContentToTaskBlock(taskId, toolBlock.id);
-    return await this.toolBlockRepository.save(toolBlock);
+    const createdToolBlock = await this.toolBlockRepository.save(toolBlock);
+    await this.taskBlocksService.addContentToTaskBlock(
+      taskId,
+      createdToolBlock.id,
+    );
+    return createdToolBlock;
   }
 
   async findAll() {

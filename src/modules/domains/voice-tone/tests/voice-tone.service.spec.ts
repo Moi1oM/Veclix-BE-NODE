@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VoiceToneService } from './voice-tone.service';
+import { VoiceToneService } from '../voice-tone.service';
 
 describe('VoiceToneService', () => {
   let service: VoiceToneService;

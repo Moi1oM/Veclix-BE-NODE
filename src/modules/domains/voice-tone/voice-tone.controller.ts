@@ -27,7 +27,7 @@ export class VoiceToneController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.voiceToneService.findOne(+id);
+    return this.voiceToneService.findOneByIdOrException(+id);
   }
 
   @Patch(':id')

@@ -52,6 +52,9 @@ export class Cycle {
   @Column({ type: 'text', nullable: true })
   memo: string;
 
+  @Column('text', { array: true })
+  contents: string[];
+
   @Column({
     type: 'enum',
     enum: CycleTimeZones,

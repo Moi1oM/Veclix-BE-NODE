@@ -29,8 +29,8 @@ export class CreateChannelDto {
     type: Number,
   })
   @IsOptional()
-  @IsString()
-  voiceToneId?: string;
+  @IsNumber()
+  voiceToneId?: number;
 
   @ApiProperty({
     description: 'Owner id of the channel',
@@ -40,5 +40,5 @@ export class CreateChannelDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  ownerId?: string;
+  ownerId?: number;
 }

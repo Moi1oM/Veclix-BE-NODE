@@ -70,8 +70,12 @@ export class TaskBlocksService {
     const agentBlock =
       await this.agentBlocksService.findOneByAgentIdOrException(agentId);
     taskBlock.agentBlock = Promise.resolve(agentBlock);
-    await this.agentBlocksService.addContentToAgentBlock(agentId, taskBlock.id);
-    return await this.taskBlockRepository.save(taskBlock);
+    const createdTaskBlock = await this.taskBlockRepository.save(taskBlock);
+    await this.agentBlocksService.addContentToAgentBlock(
+      agentId,
+      createdTaskBlock.id,
+    );
+    return createdTaskBlock;
   }
 
   async findAll() {

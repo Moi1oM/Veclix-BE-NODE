@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VoiceToneController } from './voice-tone.controller';
-import { VoiceToneService } from './voice-tone.service';
+import { VoiceToneController } from '../voice-tone.controller';
+import { VoiceToneService } from '../voice-tone.service';
 
 describe('VoiceToneController', () => {
   let controller: VoiceToneController;
