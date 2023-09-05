@@ -12,6 +12,11 @@ export class CompanyUsersService {
     private readonly companyUserRepository: Repository<CompanyUser>,
   ) {}
 
+  async findPlansByCompanyUserId(companyUserId: number) {
+    const companyUser = await this.findOneByIdOrException(companyUserId);
+    return await companyUser.plan;
+  }
+
   async findOneByEmailOrCreate(email: string): Promise<CompanyUser> {
     const companyUser = await this.companyUserRepository.findOne({
       where: { email: email },
@@ -38,6 +43,7 @@ export class CompanyUsersService {
   async findOneByIdOrException(id: number): Promise<CompanyUser> {
     const companyUser = await this.companyUserRepository.findOne({
       where: { id: id },
+      relations: ['plan'],
     });
     if (!companyUser) {
       throw new Error('Company user not found');
