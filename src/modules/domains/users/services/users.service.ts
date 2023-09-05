@@ -6,14 +6,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserQueryDto } from '../dto/dquery-user.dto';
+import { CompanyUser } from '../../company-users/entities/company-user.entity';
+import { CompanyUsersService } from '../../company-users/company-users.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private readonly userRepository: Repository<User>,
     private readonly logger: Logger,
   ) {}
+
   async save(user: User): Promise<User> {
     return await this.userRepository.save(user);
   }

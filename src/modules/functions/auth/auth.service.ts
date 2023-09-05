@@ -1,17 +1,30 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import axios from 'axios';
-import { CreateUserDto } from 'src/modules/domains/users/dto/create-user.dto';
 import { User } from 'src/modules/domains/users/entities/user.entity';
 import { UsersService } from './../../domains/users/services/users.service';
+import { CompanyUser } from '../../domains/company-users/entities/company-user.entity';
+import { CompanyUsersService } from '../../domains/company-users/company-users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly companyUsersService: CompanyUsersService,
+  ) {}
+
+  async validateCompany(token: string, provider: string): Promise<CompanyUser> {
+    let email: string;
+    // email = await this.getEmailFromProvider(provider, token);
+    try {
+      email = await this.getEmailFromProvider(provider, token);
+    } catch (error) {
+      throw new UnauthorizedException(
+        `Error occured while validating ${provider} token : ${error.message}`,
+      );
+    }
+    // access token을 company user로 변환
+    return await this.companyUsersService.findOneByEmailOrCreate(email);
+  }
 
   async validateUser(token: string, provider: string): Promise<User> {
     // 각 서버로부터 access token을 email로 변환

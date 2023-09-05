@@ -12,6 +12,19 @@ export class CompanyUsersService {
     private readonly companyUserRepository: Repository<CompanyUser>,
   ) {}
 
+  async findOneByEmailOrCreate(email: string): Promise<CompanyUser> {
+    const companyUser = await this.companyUserRepository.findOne({
+      where: { email: email },
+    });
+    if (!companyUser) {
+      const newCompanyUser = new CompanyUser(email);
+      const createdCompanyUser = await this.companyUserRepository.save(
+        newCompanyUser,
+      );
+      return createdCompanyUser;
+    }
+  }
+
   async create(
     createCompanyUserDto: CreateCompanyUserDto,
   ): Promise<CompanyUser> {

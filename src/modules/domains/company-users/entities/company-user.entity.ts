@@ -56,4 +56,10 @@ export class CompanyUser {
   @ManyToOne(() => Plan, (plan) => plan.companyUsers)
   @JoinColumn({ name: 'planId' })
   plan: Plan;
+
+  // METHODS
+  constructor(email: string, username = 'default name') {
+    this.email = email;
+    this.username = username;
+  }
 }
