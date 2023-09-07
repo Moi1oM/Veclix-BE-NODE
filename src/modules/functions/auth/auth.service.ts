@@ -1,7 +1,7 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import axios from 'axios';
 import { User } from 'src/modules/domains/users/entities/user.entity';
-import { UsersService } from './../../domains/users/services/users.service';
+import { UsersService } from '../../domains/users/services/users.service';
 import { CompanyUser } from '../../domains/company-users/entities/company-user.entity';
 import { CompanyUsersService } from '../../domains/company-users/company-users.service';
 
@@ -20,10 +20,10 @@ export class AuthService {
       email = await this.getEmailFromProvider(provider, token);
     } catch (error) {
       throw new UnauthorizedException(
-        `Error occured while validating ${provider} token : ${error.message}`,
+        `Error occurred while validating ${provider} token : ${error.message}`,
       );
     }
-    // access token을 company user로 변환
+    // access npm install cache-manager cache-manager-redis-store @nestjs/commontoken을 company user로 변환
     return await this.companyUsersService.findOneByEmailOrCreate(email);
   }
 
@@ -40,9 +40,8 @@ export class AuthService {
       );
     }
     // email로 user를 찾거나 없으면 생성
-    const user = await this.usersService.findByEmailOrCreate(email);
     // user 반환
-    return user;
+    return await this.usersService.findByEmailOrCreate(email);
   }
 
   private async getEmailFromProvider(
