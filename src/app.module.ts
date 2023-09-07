@@ -17,15 +17,17 @@ export const cacheModule = CacheModule.registerAsync({
   inject: [ConfigService],
   useFactory: async (
     configService: ConfigService,
-  ): Promise<CacheModuleOptions> => ({
-    store: redisStore,
-    host: configService.get<string>('REDIS_HOST'),
-    port: configService.get<number>('REDIS_PORT'),
-    ttl: 0,
-    auth_pass: configService.get<string>('REDIS_PASSWORD'),
-  }),
+  ): Promise<CacheModuleOptions> => {
+    return {
+      store: redisStore,
+      host: configService.get<string>('REDIS_HOST', 'localhost'), // using default value as 'localhost'
+      port: configService.get<number>('REDIS_PORT', 6379), // using default value as 6379
+      password: configService.get<string>('REDIS_PASSWORD'), // no default value, it should be defined in your env
+      ttl: configService.get<number>('CACHE_TTL', 600), // using default value as 600 seconds
+      db: configService.get<number>('REDIS_DB', 0), // using default value as 0
+    };
+  },
 });
-
 @Module({
   imports: [
     ConfigModule.forRoot({
