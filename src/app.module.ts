@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerMiddleware } from './commons/common/logger/logger.middleware';
 import { loadModules } from './commons/utils/loadModules';
-import { CacheModule, CacheModuleOptions } from '@nestjs/cache-manager';
+import {
+  CacheInterceptor,
+  CacheModule,
+  CacheModuleOptions,
+} from '@nestjs/cache-manager';
 import * as process from 'process';
 import * as redisStore from 'cache-manager-ioredis';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 const dynamicModules = loadModules(__dirname + '/**/*.module{.ts,.js}').filter(
   Boolean,
@@ -19,6 +24,7 @@ export const cacheModule = CacheModule.registerAsync({
     configService: ConfigService,
   ): Promise<CacheModuleOptions> => {
     return {
+      isGlobal: true,
       store: redisStore,
       host: configService.get<string>('REDIS_HOST', 'localhost'), // using default value as 'localhost'
       port: configService.get<number>('REDIS_PORT', 6379), // using default value as 6379
@@ -51,7 +57,13 @@ export const cacheModule = CacheModule.registerAsync({
     ...dynamicModules,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   private readonly isDev: boolean = process.env.NODE_ENV === 'DEV';
