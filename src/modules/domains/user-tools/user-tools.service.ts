@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { CreateUserToolDto } from './dto/create-user-tool.dto';
 import { UpdateUserToolDto } from './dto/update-user-tool.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +12,7 @@ import { UserTool } from './entities/user-tool.entity';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 import { User } from '../users/entities/user.entity';
+
 export interface SlackResponse {
   ok: boolean;
   error?: string;
@@ -29,6 +36,25 @@ export class UserToolsService {
     private readonly userToolRepository: Repository<UserTool>,
   ) {}
 
+  async getMySlackToken(user: User): Promise<UserTool> {
+    const slackToken = await this.userToolRepository.findOne({
+      where: { user_id: user.id, tool_set: 'slack' },
+    });
+    if (!slackToken) {
+      throw new BadRequestException('this user does not have slack token');
+    }
+    return slackToken;
+  }
+
+  async getMyNotionToken(user: User): Promise<UserTool> {
+    const notionToken = await this.userToolRepository.findOne({
+      where: { user_id: user.id, tool_set: 'notion' },
+    });
+    if (!notionToken) {
+      throw new BadRequestException('this user does not have notion token');
+    }
+    return notionToken;
+  }
   async makeSlackOAuthUserTools(
     user: User,
     authCode: string,

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  CacheTTL,
 } from '@nestjs/common';
 import {
   NotionResponse,
@@ -21,6 +22,9 @@ import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guar
 import { CurrentUser } from 'src/commons/common/decorators/user.decorator';
 import { User } from '../users/entities/user.entity';
 import { OauthCodeDto } from './dto/oauth-code.dto';
+import { UserTool } from './entities/user-tool.entity';
+
+const oneWeek = 604800;
 
 @ApiTags('user-tools')
 @ApiBearerAuth('access-token')
@@ -28,6 +32,28 @@ import { OauthCodeDto } from './dto/oauth-code.dto';
 @Controller('v1/user-tools')
 export class UserToolsController {
   constructor(private readonly userToolsService: UserToolsService) {}
+
+  @ApiOperation({
+    summary: 'get saved slack token',
+    description:
+      'get saved slack token. 400 will respond if slack token does not exist.',
+  })
+  @CacheTTL(oneWeek)
+  @Get('slack/@me')
+  async getMySlackToken(@CurrentUser() user: User): Promise<UserTool> {
+    return await this.userToolsService.getMySlackToken(user);
+  }
+
+  @ApiOperation({
+    summary: 'get saved notion token',
+    description:
+      'get saved notion token. 400 will respond if notion token does not exist.',
+  })
+  @CacheTTL(oneWeek)
+  @Get('notion/@me')
+  async getMyNotionToken(@CurrentUser() user: User): Promise<UserTool> {
+    return await this.userToolsService.getMyNotionToken(user);
+  }
 
   @ApiOperation({
     summary: 'create slack tool with oauth code',

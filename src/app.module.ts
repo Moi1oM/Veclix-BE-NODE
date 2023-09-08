@@ -13,6 +13,7 @@ import {
 import * as process from 'process';
 import * as redisStore from 'cache-manager-ioredis';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { HttpCacheInterceptor } from './commons/common/interceptors/HttpCacheInterceptor';
 
 const dynamicModules = loadModules(__dirname + '/**/*.module{.ts,.js}').filter(
   Boolean,
@@ -61,7 +62,7 @@ export const cacheModule = CacheModule.registerAsync({
     AppService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
+      useClass: HttpCacheInterceptor,
     },
   ],
 })
