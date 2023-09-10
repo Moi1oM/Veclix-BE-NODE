@@ -55,7 +55,11 @@ export class UserToolsService {
     return twitterToken;
   }
 
-  async makeTwitterOAuthUserTools(user: User, code: string): Promise<UserTool> {
+  async makeTwitterOAuthUserTools(
+    user: User,
+    code: string,
+    verifier: string,
+  ): Promise<UserTool> {
     const clientId = process.env.TWITTER_OAUTH_CLIENT_ID;
     const clientSecret = process.env.TWITTER_OAUTH_CLIENT_SECRET; // 새 환경 변수를 추가해야 합니다.
     const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
@@ -72,7 +76,7 @@ export class UserToolsService {
       grant_type: 'authorization_code',
       redirect_uri: process.env.TWITTER_OAUTH_REDIRECT_URI,
       client_id: clientId,
-      code_verifier: process.env.TWITTER_OAUTH_CODE_VERIFIER,
+      code_verifier: verifier,
     };
     this.logger.debug(data, 'data', headers, 'headers');
     const res = await axios.post(url, new URLSearchParams(data), {

@@ -21,7 +21,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BasicAuthGuard } from 'src/modules/functions/auth/guard/basic-auth.guard';
 import { CurrentUser } from 'src/commons/common/decorators/user.decorator';
 import { User } from '../users/entities/user.entity';
-import { OauthCodeDto } from './dto/oauth-code.dto';
+import { OauthCodeDto, OauthCodePKCE } from './dto/oauth-code.dto';
 import { UserTool } from './entities/user-tool.entity';
 
 const oneWeek = 604800;
@@ -82,12 +82,13 @@ export class UserToolsController {
   })
   @Post('twitter')
   async createTwitterTool(
-    @Body() code: OauthCodeDto,
+    @Body() code: OauthCodePKCE,
     @CurrentUser() user: User,
   ): Promise<UserTool> {
     return await this.userToolsService.makeTwitterOAuthUserTools(
       user,
       code.code,
+      code.code_verifier,
     );
   }
 
