@@ -28,6 +28,7 @@ export class AxiosErrorFilter implements ExceptionFilter {
       message,
       detail:
         'This is a custom error message from the AxiosErrorFilter. If you see this, it means that the error was occured from the axios request.',
+      originalError: exception.message,
       timestamp: new Date().toISOString(),
     });
   }

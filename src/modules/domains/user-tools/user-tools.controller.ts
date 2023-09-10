@@ -56,6 +56,42 @@ export class UserToolsController {
   }
 
   @ApiOperation({
+    summary: 'refresh the twitter token',
+    description:
+      'refresh the twitter token. 400 will respond if twitter token does not exist.',
+  })
+  @Post('twitter/@me/refresh')
+  async refreshTwitterToken(@CurrentUser() user: User): Promise<UserTool> {
+    return await this.userToolsService.refreshTwitterToken(user);
+  }
+
+  @ApiOperation({
+    summary: 'get saved twitter token',
+    description:
+      'get saved twitter token. 400 will respond if twitter token does not exist.',
+  })
+  @Get('twitter/@me')
+  async getMyTwitterToken(@CurrentUser() user: User): Promise<UserTool> {
+    return await this.userToolsService.getMyTwitterToken(user);
+  }
+
+  @ApiOperation({
+    summary: 'create twitter tool with oauth code',
+    description:
+      'create twitter tool with oauth code. it has to be post after get twitter oauth code.',
+  })
+  @Post('twitter')
+  async createTwitterTool(
+    @Body() code: OauthCodeDto,
+    @CurrentUser() user: User,
+  ): Promise<UserTool> {
+    return await this.userToolsService.makeTwitterOAuthUserTools(
+      user,
+      code.code,
+    );
+  }
+
+  @ApiOperation({
     summary: 'create slack tool with oauth code',
     description:
       'create slack tool with oauth code. it has to be post after get slack oauth code.',

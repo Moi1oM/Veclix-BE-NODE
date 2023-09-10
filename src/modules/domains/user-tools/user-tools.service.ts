@@ -12,6 +12,7 @@ import { UserTool } from './entities/user-tool.entity';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 import { User } from '../users/entities/user.entity';
+import * as process from 'process';
 
 export interface SlackResponse {
   ok: boolean;
@@ -21,11 +22,19 @@ export interface SlackResponse {
 
 export interface UserToolResponse {
   userTool: UserTool;
-  oauthResposne: SlackResponse | NotionResponse;
+  oauthResponse: SlackResponse | NotionResponse;
 }
 export interface NotionResponse {
   error?: string;
   [key: string]: any;
+}
+
+export interface TwitterMetadata {
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+  token_type: string;
 }
 
 @Injectable()
@@ -35,6 +44,79 @@ export class UserToolsService {
     @InjectRepository(UserTool)
     private readonly userToolRepository: Repository<UserTool>,
   ) {}
+
+  async getMyTwitterToken(user: User): Promise<UserTool> {
+    const twitterToken = await this.userToolRepository.findOne({
+      where: { user_id: user.id, tool_set: 'twitter' },
+    });
+    if (!twitterToken) {
+      throw new BadRequestException('this user does not have twitter token');
+    }
+    return twitterToken;
+  }
+
+  async makeTwitterOAuthUserTools(user: User, code: string): Promise<UserTool> {
+    const clientId = process.env.TWITTER_OAUTH_CLIENT_ID;
+    const clientSecret = process.env.TWITTER_OAUTH_CLIENT_SECRET; // 새 환경 변수를 추가해야 합니다.
+    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
+      'base64',
+    );
+
+    const url = 'https://api.twitter.com/2/oauth2/token';
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${credentials}`,
+    };
+    const data = {
+      code: code,
+      grant_type: 'authorization_code',
+      redirect_uri: process.env.TWITTER_OAUTH_REDIRECT_URI,
+      client_id: clientId,
+      code_verifier: process.env.TWITTER_OAUTH_CODE_VERIFIER,
+    };
+    this.logger.debug(data, 'data', headers, 'headers');
+    const res = await axios.post(url, new URLSearchParams(data), {
+      headers,
+    });
+    this.logger.debug(res.data);
+    const responseJson = res.data;
+    return await this.saveTokenToDb(responseJson, user, 'twitter');
+  }
+
+  async refreshTwitterToken(user: User): Promise<UserTool> {
+    const twitterToken = await this.userToolRepository.findOne({
+      where: { user_id: user.id, tool_set: 'twitter' },
+    });
+    if (!twitterToken) {
+      throw new BadRequestException('this user does not have twitter token');
+    }
+    const clientId = process.env.TWITTER_OAUTH_CLIENT_ID;
+    const clientSecret = process.env.TWITTER_OAUTH_CLIENT_SECRET; // 새 환경 변수를 추가해야 합니다.
+    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
+      'base64',
+    );
+
+    const url = 'https://api.twitter.com/oauth2/token';
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${credentials}`,
+    };
+
+    const metaData: any = twitterToken.metadata;
+
+    const data = {
+      grant_type: 'refresh_token',
+      refresh_token: metaData.refresh_token,
+    };
+
+    this.logger.debug(data, 'data', headers, 'headers');
+    const res = await axios.post(url, new URLSearchParams(data), {
+      headers,
+    });
+    this.logger.debug(res.data);
+    const responseJson = res.data;
+    return await this.saveTokenToDb(responseJson, user, 'twitter');
+  }
 
   async getMySlackToken(user: User): Promise<UserTool> {
     const slackToken = await this.userToolRepository.findOne({
