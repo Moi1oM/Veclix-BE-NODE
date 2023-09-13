@@ -37,11 +37,11 @@ export class PlansService {
     return await this.planRepository.save(createPlanDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<Plan[]> {
     return await this.planRepository.find();
   }
 
-  async findOneByIdOrException(id: number) {
+  async findOneByIdOrException(id: number): Promise<Plan> {
     const foundPlan = await this.planRepository.findOne({
       where: { id: id },
       order: { updatedAt: 'DESC' },

@@ -22,7 +22,7 @@ export class CyclesService {
     private readonly messagesService: MessagesService,
   ) {}
 
-  async findMyCycle(userId: number) {
+  async findMyCycle(userId: number): Promise<Cycle[]> {
     // find agentBlock with userId
     const empAgents = await this.empAgentsService.findByUserIdOrException(
       userId,

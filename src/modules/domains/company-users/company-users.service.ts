@@ -4,6 +4,7 @@ import { UpdateCompanyUserDto } from './dto/update-company-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompanyUser } from './entities/company-user.entity';
 import { Repository } from 'typeorm';
+import { Plan } from '../plans/entities/plan.entity';
 
 @Injectable()
 export class CompanyUsersService {
@@ -12,7 +13,7 @@ export class CompanyUsersService {
     private readonly companyUserRepository: Repository<CompanyUser>,
   ) {}
 
-  async findPlansByCompanyUserId(companyUserId: number) {
+  async findPlansByCompanyUserId(companyUserId: number): Promise<Plan> {
     const companyUser = await this.findOneByIdOrException(companyUserId);
     return await companyUser.plan;
   }

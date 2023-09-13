@@ -42,7 +42,7 @@ export class AgentTagsService {
     return agentTag;
   }
 
-  async findAll() {
+  async findAll(): Promise<AgentTag[]> {
     return await this.agentTagRepository.find();
   }
 
@@ -69,8 +69,9 @@ export class AgentTagsService {
     return agentTags;
   }
 
-  async remove(agent_uuid: string, tag_name: string) {
+  async remove(agent_uuid: string, tag_name: string): Promise<AgentTag> {
     const agentTag = await this.existsOrCreate(agent_uuid, tag_name);
     await this.agentTagRepository.delete(agentTag.id);
+    return agentTag;
   }
 }
