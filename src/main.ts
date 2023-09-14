@@ -10,8 +10,11 @@ import { AxiosErrorFilter } from './commons/common/filters/axios-error.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //CORS Setting
-  app.enableCors();
+  //CORS Setting allow all
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  });
 
   //SuccessInterceptor Setting
   app.useGlobalInterceptors(new SuccessInterceptor());
